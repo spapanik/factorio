@@ -9,6 +9,12 @@ The format is based on `Keep a Changelog`_, and this project adheres to `Semanti
 `Unreleased`_
 -------------
 
+Added
+^^^^^
+
+* Add a simple field, a collection field and a factory field
+
+
 .. _`unreleased`: https://github.com/spapanik/factorio/compare/v0.1.0...main
 
 .. _`Keep a Changelog`: https://keepachangelog.com/en/1.0.0/
