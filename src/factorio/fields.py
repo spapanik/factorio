@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from secrets import choice
+from typing import TYPE_CHECKING, Any, Iterable
 
 from faker import Faker
 
@@ -24,6 +25,14 @@ class Field(AbstractField):
 
     def __call__(self):
         return getattr(_fake, ALIASES.get(self.type, self.type))(**self.kwargs)
+
+
+class ChoiceField(AbstractField):
+    def __init__(self, options: Iterable[Any]):
+        self.options = list(options)
+
+    def __call__(self):
+        return choice(self.options)
 
 
 class CollectionField(AbstractField):

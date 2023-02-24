@@ -3,13 +3,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from factorio.factories import Factory
-from factorio.fields import CollectionField, FactoryField, Field
+from factorio.fields import ChoiceField, CollectionField, FactoryField, Field
 
 
 def test_fields():
     @dataclass
     class Spam:
         a: int
+        b: int
 
     @dataclass
     class Bacon:
@@ -22,6 +23,7 @@ def test_fields():
             model = Spam
             fields = {
                 "a": Field("int", max_value=42),
+                "b": ChoiceField(range(21)),
             }
 
     class BaconFactory(Factory):
@@ -34,6 +36,9 @@ def test_fields():
                 ),
                 "z": FactoryField(SpamFactory),
             }
+
+    spam = SpamFactory.build()
+    assert 0 <= spam.b <= 21
 
     plain_bacon = BaconFactory.build()
     assert 0 <= plain_bacon.x <= 4

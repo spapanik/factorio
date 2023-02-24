@@ -9,6 +9,11 @@ The format is based on `Keep a Changelog`_, and this project adheres to `Semanti
 `Unreleased`_
 -------------
 
+Added
+^^^^^
+
+* Add a choice field
+
 `0.1.0`_ - 2023-02-24
 ---------------------
 
