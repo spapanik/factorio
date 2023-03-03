@@ -15,7 +15,7 @@ class Factory:
         fields: dict[str, Any] = {}
         for key, value in cls.Meta.fields.items():
             if key in kwargs:
-                value = kwargs[key]
+                value = kwargs[key]  # noqa: PLW2901
 
             fields[key] = value() if isinstance(value, AbstractField) else value
 
