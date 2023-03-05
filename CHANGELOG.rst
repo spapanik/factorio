@@ -11,15 +11,17 @@ The format is based on `Keep a Changelog`_, and this project adheres to `Semanti
 
 Added
 ^^^^^
-
 * Add a choice field
+
+Removed
+^^^^^^^
+* Dropped python 3.7 support
 
 `0.1.0`_ - 2023-02-24
 ---------------------
 
 Added
 ^^^^^
-
 * Add a simple field, a collection field and a factory field
 
 
