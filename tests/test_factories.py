@@ -6,7 +6,7 @@ from factorio.factories import Factory
 from factorio.fields import ChoiceField, CollectionField, FactoryField, Field
 
 
-def test_fields():
+def test_fields() -> None:
     @dataclass
     class Spam:
         a: int

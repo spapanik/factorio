@@ -11,7 +11,7 @@ class Factory:
         fields: dict[str, Any]
 
     @classmethod
-    def build(cls, **kwargs):
+    def build(cls, **kwargs: Any) -> Any:
         fields: dict[str, Any] = {}
         for key, value in cls.Meta.fields.items():
             if key in kwargs:
