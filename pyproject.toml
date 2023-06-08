@@ -102,7 +102,7 @@ skip_empty = true
 
 [tool.poetry]
 name = "factorio"
-version = "0.1.0"
+version = "0.2.0"
 description = "A fixtures replacement tool"
 authors = [
     "Stephanos Kuma <stephanos@kuma.ai>",
