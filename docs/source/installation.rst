@@ -2,4 +2,11 @@
 Installation
 ============
 
-How to install, long version, goes here.
+The easiest way is to use `poetry`_ to manage your dependencies and add *factorio* to them.
+
+.. code-block:: toml
+
+    [tool.poetry.dependencies]
+    factorio = "*"
+
+.. _poetry: https://python-poetry.org/
