@@ -11,6 +11,7 @@ def test_fields() -> None:
     class Spam:
         a: int
         b: int
+        c: int
 
     @dataclass
     class Bacon:
@@ -25,6 +26,7 @@ def test_fields() -> None:
         class Fields:
             a = Field("int", max_value=42)
             b = ChoiceField(range(21))
+            c = 1024
 
     class BaconFactory(Factory):
         class Meta:
@@ -47,3 +49,4 @@ def test_fields() -> None:
 
     bacon = BaconFactory.build(x=400)
     assert bacon.x == 400
+    assert bacon.z.c == 1024
