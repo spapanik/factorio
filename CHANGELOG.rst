@@ -9,6 +9,9 @@ The format is based on `Keep a Changelog`_, and this project adheres to `Semanti
 `Unreleased`_
 -------------
 
+`0.3.0`_ - 2023-07-14
+---------------------
+
 Changed
 ^^^^^^^
 * Moved fields out of the Meta class, and into a separate Fields class
@@ -32,7 +35,8 @@ Added
 * Added a simple field, a collection field and a factory field
 
 
-.. _`unreleased`: https://github.com/spapanik/factorio/compare/v0.2.0...main
+.. _`unreleased`: https://github.com/spapanik/factorio/compare/v0.3.0...main
+.. _`0.3.0`: https://github.com/spapanik/yamk/compare/v0.2.0...v0.3.0
 .. _`0.2.0`: https://github.com/spapanik/yamk/compare/v0.1.0...v0.2.0
 .. _`0.1.0`: https://github.com/spapanik/factorio/releases/tag/v0.1.0
 
