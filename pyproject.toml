@@ -126,7 +126,7 @@ classifiers = [
 python = "^3.8"
 
 # dependencies
-Faker = "^18.0"
+Faker = "^19.0"
 
 [tool.poetry.group.dev.dependencies]
 ipdb = {version = "^0.13", python = "^3.9"}
