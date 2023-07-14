@@ -9,12 +9,16 @@ The format is based on `Keep a Changelog`_, and this project adheres to `Semanti
 `Unreleased`_
 -------------
 
+Changed
+^^^^^^^
+* Moved fields out of the Meta class, and into a separate Fields class
+
 `0.2.0`_ - 2023-06-08
 ---------------------
 
 Added
 ^^^^^
-* Add a choice field
+* Added a choice field
 
 Removed
 ^^^^^^^
@@ -25,7 +29,7 @@ Removed
 
 Added
 ^^^^^
-* Add a simple field, a collection field and a factory field
+* Added a simple field, a collection field and a factory field
 
 
 .. _`unreleased`: https://github.com/spapanik/factorio/compare/v0.2.0...main
