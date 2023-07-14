@@ -1,5 +1,5 @@
 # noqa: INP001
-from __future__ import annotations
+from __future__ import annotations  # py39
 
 project = "factorio"
 project_copyright = "2022, Stephanos Kuma"
