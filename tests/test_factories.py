@@ -21,21 +21,21 @@ def test_fields() -> None:
     class SpamFactory(Factory):
         class Meta:
             model = Spam
-            fields = {
-                "a": Field("int", max_value=42),
-                "b": ChoiceField(range(21)),
-            }
+
+        class Fields:
+            a = Field("int", max_value=42)
+            b = ChoiceField(range(21))
 
     class BaconFactory(Factory):
         class Meta:
             model = Bacon
-            fields = {
-                "x": Field("int", max_value=4),
-                "y": CollectionField(
-                    Field("word"), container=list, min_length=3, max_length=7
-                ),
-                "z": FactoryField(SpamFactory),
-            }
+
+        class Fields:
+            x = Field("int", max_value=4)
+            y = CollectionField(
+                Field("word"), container=list, min_length=3, max_length=7
+            )
+            z = FactoryField(SpamFactory)
 
     spam = SpamFactory.build()
     assert 0 <= spam.b <= 21

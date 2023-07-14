@@ -6,14 +6,18 @@ from factorio.fields import AbstractField
 
 
 class Factory:
+    Fields: type
+
     class Meta:
         model: type
-        fields: dict[str, Any]
 
     @classmethod
     def build(cls, **kwargs: Any) -> Any:
         fields: dict[str, Any] = {}
-        for key, value in cls.Meta.fields.items():
+        for key, value in cls.Fields.__dict__.items():
+            if key.startswith("__") and key.endswith("__"):
+                continue
+
             if key in kwargs:
                 value = kwargs[key]  # noqa: PLW2901
 
