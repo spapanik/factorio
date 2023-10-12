@@ -17,6 +17,7 @@ Let's say you have two dataclasses like this:
         x: int
         y: list[str]
         z: Spam
+        t: str = "Francis"
 
 
 To create a factories for these dataclasses, you can do this:

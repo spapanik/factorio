@@ -9,6 +9,10 @@ The format is based on `Keep a Changelog`_, and this project adheres to `Semanti
 `Unreleased`_
 -------------
 
+Added
+^^^^^
+* Added the ability to override a field that's not defined in fields
+
 `0.3.0`_ - 2023-07-14
 ---------------------
 

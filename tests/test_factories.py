@@ -18,6 +18,7 @@ def test_fields() -> None:
         x: int
         y: list[str]
         z: Spam
+        t: str = "Francis"
 
     class SpamFactory(Factory):
         class Meta:
@@ -46,7 +47,9 @@ def test_fields() -> None:
     assert 0 <= plain_bacon.x <= 4
     assert isinstance(plain_bacon.y, list)
     assert 0 <= plain_bacon.z.a <= 42
+    assert plain_bacon.t == "Francis"
 
-    bacon = BaconFactory.build(x=400)
+    bacon = BaconFactory.build(x=400, t="Kevin")
     assert bacon.x == 400
     assert bacon.z.c == 1024
+    assert bacon.t == "Kevin"

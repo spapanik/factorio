@@ -13,7 +13,7 @@ class Factory:
 
     @classmethod
     def build(cls, **kwargs: Any) -> Any:
-        fields: dict[str, Any] = {}
+        fields: dict[str, Any] = kwargs
         for key, value in cls.Fields.__dict__.items():
             if key.startswith("__") and key.endswith("__"):
                 continue
