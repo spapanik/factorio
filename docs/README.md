@@ -20,8 +20,8 @@ Under the hood it uses [faker] to create realistic values for each field.
 
 ## Links
 
--   [Documentation]
--   [Changelog]
+- [Documentation]
+- [Changelog]
 
 [test_badge]: https://github.com/spapanik/factorio/actions/workflows/tests.yml/badge.svg
 [test_url]: https://github.com/spapanik/factorio/actions/workflows/tests.yml
