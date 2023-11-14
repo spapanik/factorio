@@ -25,7 +25,7 @@ Under the hood it uses [faker] to create realistic values for each field.
 
 [test_badge]: https://github.com/spapanik/factorio/actions/workflows/tests.yml/badge.svg
 [test_url]: https://github.com/spapanik/factorio/actions/workflows/tests.yml
-[licence_badge]: https://img.shields.io/github/license/spapanik/factorio
+[licence_badge]: https://img.shields.io/badge/License-LGPL_v3-blue.svg
 [licence_url]: https://github.com/spapanik/factorio/blob/main/docs/LICENSE.md
 [pypi_badge]: https://img.shields.io/pypi/v/factorio
 [pypi_url]: https://pypi.org/project/factorio
