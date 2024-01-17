@@ -138,17 +138,17 @@ classifiers = [
 python = "^3.8"
 
 # dependencies
-Faker = "^19.0"
+Faker = ">=19.0"
 
 [tool.poetry.group.dev.dependencies]
-ipdb = { version = "^0.13", python = "^3.9" }
-ipython = { version = "^8.12", python = "^3.9" }
-pickleshare = { version = "^0.7", python = "^3.9" }
-pipdeptree = "^2.7"
+ipdb = { version = "^0.13", python = "^3.10" }
+ipython = { version = "^8.20", python = "^3.10" }
+pickleshare = { version = "^0.7", python = "^3.10" }
+pipdeptree = "^2.13"
 
 [tool.poetry.group.lint.dependencies]
-black = "^23.11"
-mypy = "^1.7"
+black = "^23.12"
+mypy = "^1.8"
 ruff = "^0.1"
 
 [tool.poetry.group.test.dependencies]
@@ -157,5 +157,5 @@ pytest-cov = "^4.1"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.5"
-mkdocs-material = "^9.4"
-pygments = "^2.16"
+mkdocs-material = "^9.5"
+Pygments = "^2.17"

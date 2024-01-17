@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Fixed
+
+- Relaxed the faker requirements
+
 ## [0.4.0] - 2023-10-28
 
 ### Added
