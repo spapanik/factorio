@@ -14,29 +14,29 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Added
 
-- Add the ability to override a field that's not defined in fields
+- Added the ability to override a field that's not defined in fields
 
 ## [0.3.0] - 2023-07-14
 
 ### Changed
 
-- Move fields out of the Meta class, and into a separate Fields class
+- Moved fields out of the Meta class, and into a separate Fields class
 
 ## [0.2.0] - 2023-06-08
 
 ### Added
 
-- Add a choice field
+- Added a choice field
 
 ### Removed
 
-- Drop python 3.7 support
+- Dropped python 3.7 support
 
 ## [0.1.0] - 2023-02-24
 
 ### Added
 
-- Add a simple field, a collection field and a factory field
+- Added a simple field, a collection field and a factory field
 
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
