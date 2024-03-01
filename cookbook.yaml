@@ -1,7 +1,6 @@
 $globals:
   shell: bash
-  version: "5.2"
-  new_order: true
+  version: "6.0"
   vars:
     poetry_sync: "--sync"
 
@@ -19,7 +18,7 @@ format:
     - install
   commands:
     - black .
-    - ruff --fix-only .
+    - ruff check --fix-only .
 
 lint:
   phony: true
@@ -28,7 +27,7 @@ lint:
   commands:
     - black --check .
     - poetry check --lock
-    - ruff .
+    - ruff check .
     - mypy .
 
 tests:
