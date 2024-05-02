@@ -1,7 +1,7 @@
 The easiest way is to use [poetry] to manage your dependencies
-and add *factorio* to them.
+and add _factorio_ to them.
 
-``` toml
+```toml
 [tool.poetry.dependencies]
 factorio = "^0.3"
 ```

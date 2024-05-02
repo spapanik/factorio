@@ -2,7 +2,7 @@
 
 Suppose we have two dataclasses like this:
 
-``` python
+```python
 @dataclass
 class Spam:
     a: int
@@ -19,7 +19,7 @@ class Bacon:
 
 We can create factories for them using these factories:
 
-``` python
+```python
 class SpamFactory(Factory):
     class Meta:
         model = Spam
@@ -43,7 +43,7 @@ class BaconFactory(Factory):
 
 Then using the factories is as simple as:
 
-``` python
+```python
 bacon = BaconFactory.build()
 
 assert 0 <= bacon.x <= 4
@@ -54,7 +54,7 @@ assert bacon.t == "Francis"
 
 It is possible to override specific fields :
 
-``` python
+```python
 bacon = BaconFactory.build(x=400, t="Kevin")
 
 assert bacon.x == 400
