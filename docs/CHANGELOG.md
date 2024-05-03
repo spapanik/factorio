@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Changed
+
+-   Changed the default limits for a collection field
+
 ## [0.4.1] - 2024-01-24
 
 ### Fixed

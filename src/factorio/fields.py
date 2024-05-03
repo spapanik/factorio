@@ -41,8 +41,8 @@ class CollectionField(AbstractField):
         self,
         field: AbstractField,
         container: type,
-        min_length: int | None = None,
-        max_length: int | None = None,
+        min_length: int = 1,
+        max_length: int = 10,
         length: int | None = None,
     ):
         self.field = field
