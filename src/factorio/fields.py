@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from secrets import choice
-from typing import TYPE_CHECKING, Any, Iterable, NoReturn
+from typing import TYPE_CHECKING, Any, NoReturn
 
 from faker import Faker
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from factorio.factories import Factory
 
 _fake = Faker()
@@ -20,7 +22,7 @@ class AbstractField:
 
 
 class Field(AbstractField):
-    def __init__(self, type_: str, **kwargs: Any):
+    def __init__(self, type_: str, **kwargs: Any) -> None:
         self.type = type_
         self.kwargs = kwargs
 
@@ -29,7 +31,7 @@ class Field(AbstractField):
 
 
 class ChoiceField(AbstractField):
-    def __init__(self, options: Iterable[Any]):
+    def __init__(self, options: Iterable[Any]) -> None:
         self.options = list(options)
 
     def __call__(self) -> Any:
@@ -44,7 +46,7 @@ class CollectionField(AbstractField):
         min_length: int = 1,
         max_length: int = 10,
         length: int | None = None,
-    ):
+    ) -> None:
         self.field = field
         self.container = container
         if length is not None:
@@ -59,7 +61,7 @@ class CollectionField(AbstractField):
 
 
 class FactoryField(AbstractField):
-    def __init__(self, factory: type[Factory]):
+    def __init__(self, factory: type[Factory]) -> None:
         self.factory = factory
 
     def __call__(self) -> Any:
