@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ### Changed
 
+-   Changed license to BSD 3-Clause
 -   Changed the default limits for a collection field
 
 ## [0.4.1] - 2024-01-24
