@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 import pytest
 
+from factorio import fields
 from factorio.factories import Factory
-from factorio.fields import ChoiceField, CollectionField, FactoryField, Field
 
 
 def test_get_no_model() -> None:
@@ -48,24 +48,16 @@ def test_build() -> None:
         t: str = "Francis"
 
     class SpamFactory(Factory[Spam]):
-        class Meta:
-            model = Spam
-
         class Fields:
-            a = Field("int", max_value=42)
-            b = ChoiceField(range(21))
+            a = fields.IntegerField(max_value=42)
+            b = fields.ChoiceField(range(21))
             c = 1024
 
     class BaconFactory(Factory[Bacon]):
-        class Meta:
-            model = Bacon
-
         class Fields:
-            x = Field("int", max_value=4)
-            y = CollectionField(
-                Field("word"), container=list, min_length=3, max_length=7
-            )
-            z = FactoryField(SpamFactory)
+            x = fields.IntegerField(max_value=4)
+            y = fields.ListField(fields.StringField(max_chars=4), length=5, variation=2)
+            z = fields.FactoryField(SpamFactory)
 
     spam = SpamFactory.build()
     assert 0 <= spam.b <= 21
