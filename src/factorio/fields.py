@@ -18,8 +18,7 @@ ALIASES = {"int": "pyint"}
 
 class AbstractField:
     def __call__(self) -> NoReturn:
-        msg = "All concrete fields must be callable"
-        raise NotImplementedError(msg)
+        raise NotImplementedError
 
 
 class Field(AbstractField):
