@@ -2,11 +2,38 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import pytest
+
 from factorio.factories import Factory
 from factorio.fields import ChoiceField, CollectionField, FactoryField, Field
 
 
-def test_fields() -> None:
+def test_get_no_model() -> None:
+    with pytest.raises(TypeError):
+        Factory.get_model()
+
+
+def test_get_multiple_models() -> None:
+    class Spam:
+        pass
+
+    class Bacon:
+        pass
+
+    class SpamFactory(Factory[Spam]):
+        pass
+
+    class BaconFactory(Factory[Bacon]):
+        pass
+
+    class SpamAndBaconFactory(SpamFactory, BaconFactory):
+        pass
+
+    with pytest.raises(TypeError):
+        SpamAndBaconFactory.get_model()
+
+
+def test_build() -> None:
     @dataclass
     class Spam:
         a: int
@@ -20,7 +47,7 @@ def test_fields() -> None:
         z: Spam
         t: str = "Francis"
 
-    class SpamFactory(Factory):
+    class SpamFactory(Factory[Spam]):
         class Meta:
             model = Spam
 
@@ -29,7 +56,7 @@ def test_fields() -> None:
             b = ChoiceField(range(21))
             c = 1024
 
-    class BaconFactory(Factory):
+    class BaconFactory(Factory[Bacon]):
         class Meta:
             model = Bacon
 
