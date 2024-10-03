@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from secrets import choice
-from typing import TYPE_CHECKING, Any, NoReturn
+from typing import TYPE_CHECKING, Any, NoReturn, TypeVar
 
 from faker import Faker
 
@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 _fake = Faker()
 
+T = TypeVar("T")
 ALIASES = {"int": "pyint"}
 
 
@@ -61,7 +62,7 @@ class CollectionField(AbstractField):
 
 
 class FactoryField(AbstractField):
-    def __init__(self, factory: type[Factory]) -> None:
+    def __init__(self, factory: type[Factory[T]]) -> None:
         self.factory = factory
 
     def __call__(self) -> Any:

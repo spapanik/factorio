@@ -1,18 +1,41 @@
 from __future__ import annotations
 
-from typing import Any
+from inspect import getmro
+from types import get_original_bases
+from typing import Any, Generic, TypeVar
 
 from factorio.fields import AbstractField
 
+T = TypeVar("T")
 
-class Factory:
+
+class Factory(Generic[T]):
     Fields: type
 
-    class Meta:
-        model: type
+    @classmethod
+    def get_model(cls) -> type[T]:
+        candidates: set[type] = set()
+        for base in getmro(cls):
+            for original_base in get_original_bases(base):
+                try:
+                    args = original_base.__args__
+                except AttributeError:
+                    continue
+                candidates.update(arg for arg in args if not isinstance(arg, TypeVar))
+
+        if len(candidates) > 1:
+            msg = f"Multiple concrete models found for {cls.__name__}"
+            raise TypeError(msg)
+
+        if not candidates:
+            msg = f"No concrete model found for {cls.__name__}"
+            raise TypeError(msg)
+
+        return candidates.pop()
 
     @classmethod
-    def build(cls, **kwargs: Any) -> Any:
+    def build(cls, **kwargs: Any) -> T:
+        model = cls.get_model()
         fields: dict[str, Any] = kwargs
         for key, value in cls.Fields.__dict__.items():
             if key.startswith("__") and key.endswith("__"):
@@ -23,4 +46,4 @@ class Factory:
 
             fields[key] = value() if isinstance(value, AbstractField) else value
 
-        return cls.Meta.model(**fields)
+        return model(**fields)

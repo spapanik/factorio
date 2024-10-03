@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 -   Changed license to BSD 3-Clause
 -   Changed the default limits for a collection field
+-   Model is now found from type hints
 
 ## [0.4.1] - 2024-01-24
 
