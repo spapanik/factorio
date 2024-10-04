@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from inspect import getmro
-from types import get_original_bases
 from typing import Any, Generic, TypeVar
 
 from factorio.fields import AbstractField
@@ -16,7 +15,7 @@ class Factory(Generic[T]):
     def get_model(cls) -> type[T]:
         candidates: set[type] = set()
         for base in getmro(cls):
-            for original_base in get_original_bases(base):
+            for original_base in getattr(base, "__orig_bases__", ()):
                 try:
                     args = original_base.__args__
                 except AttributeError:
