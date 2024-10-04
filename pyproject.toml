@@ -116,9 +116,7 @@ select = [
     "PGH",
     "PERF",
     "PIE",
-    "PLC",
-    "PLE",
-    "PLW",
+    "PL",
     "PT",
     "PTH",
     "PYI",
@@ -146,6 +144,7 @@ ignore = [
     "COM812",
     "E501",
     "FIX002",
+    "PLR09",
     "TD002",
     "TD003",
     "TRY003",
@@ -154,6 +153,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = [
     "FBT001",
+    "PLR2004",
     "PT011",
     "S101",
 ]
