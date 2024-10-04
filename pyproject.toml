@@ -173,10 +173,11 @@ forced-separate = [
 split-on-trailing-comma = false
 
 [tool.pytest.ini_options]
-addopts = "-vv"
+addopts = "-ra -v --cov"
 testpaths = "tests"
 
 [tool.coverage.run]
+branch = true
 source = [
     "src/",
 ]
