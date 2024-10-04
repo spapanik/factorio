@@ -3,7 +3,7 @@ from __future__ import annotations
 import string
 from decimal import Decimal
 from secrets import choice
-from typing import TYPE_CHECKING, Any, Generic, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar, cast
 
 from faker import Faker
 
@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
     from factorio.factories import Factory
+    from factorio.types import TextType
 
 _fake = Faker()
 
@@ -123,6 +124,16 @@ class StringField(AbstractField[str]):
             prefix=self.prefix,
             suffix=self.suffix,
         )
+
+
+class TextField(AbstractField[str]):
+    def __init__(self, text_type: TextType, **kwargs: Any) -> None:
+        self.text_type = text_type
+        self.kwargs = kwargs
+
+    def __call__(self) -> str:
+        faker = getattr(_fake, self.text_type)
+        return cast(str, faker(**self.kwargs))
 
 
 class ListField(AbstractField[list[T]]):

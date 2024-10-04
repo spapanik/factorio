@@ -3,11 +3,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 from string import ascii_lowercase, ascii_uppercase, digits
+from typing import get_args
 
 import pytest
 
 from factorio import fields
 from factorio.factories import Factory
+from factorio.types import TextType
 
 
 def test_init_implementation_needed() -> None:
@@ -76,6 +78,12 @@ def test_string_field() -> None:
     string_field = fields.StringField(min_chars=10, max_chars=12, prefix="spam")
     assert 12 <= len(string_field()) <= 16
     assert string_field().startswith("spam")
+
+
+@pytest.mark.parametrize("text_type", get_args(TextType))
+def test_text_field(text_type: TextType) -> None:
+    string_field = fields.TextField(text_type=text_type)
+    assert isinstance(string_field(), str)
 
 
 def test_list_field() -> None:
