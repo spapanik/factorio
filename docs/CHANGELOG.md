@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [0.5.0] - 2024-11-03
+
 ### Changed
 
 -   Changed license to BSD 3-Clause
@@ -49,7 +51,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
-[Unreleased]: https://github.com/spapanik/factorio/compare/v0.4.1...main
+[Unreleased]: https://github.com/spapanik/factorio/compare/v0.5.0...main
+[0.5.0]: https://github.com/spapanik/factorio/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/spapanik/factorio/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/spapanik/factorio/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/spapanik/factorio/compare/v0.2.0...v0.3.0
