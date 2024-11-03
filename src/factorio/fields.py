@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import string
+from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 from secrets import choice
 from typing import TYPE_CHECKING, Any, Generic, TypeVar, cast
+from zoneinfo import ZoneInfo
 
 from faker import Faker
+from pyutilkit.date_utils import get_timezones
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -17,6 +20,7 @@ _fake = Faker()
 
 K = TypeVar("K")
 T = TypeVar("T")
+UTC = ZoneInfo("UTC")
 
 
 class AbstractField(Generic[T]):
@@ -124,6 +128,102 @@ class StringField(AbstractField[str]):
             prefix=self.prefix,
             suffix=self.suffix,
         )
+
+
+class DateTimeField(AbstractField[datetime]):
+    def __init__(
+        self,
+        min_datetime: datetime = datetime(2010, 1, 1, tzinfo=UTC),
+        max_datetime: datetime = datetime(2030, 12, 31, tzinfo=UTC),
+    ) -> None:
+        self.timezone = min_datetime.tzinfo
+        self.min_datetime = min_datetime.astimezone(UTC)
+        self.max_datetime = max_datetime.astimezone(UTC)
+
+    def __call__(self) -> datetime:
+        naive_datetime = _fake.date_time_between_dates(
+            self.min_datetime, self.max_datetime
+        )
+        return naive_datetime.replace(tzinfo=self.timezone)
+
+
+class NaiveDateTimeField(AbstractField[datetime]):
+    def __init__(
+        self,
+        min_datetime: datetime = datetime(2010, 1, 1),  # noqa: DTZ001
+        max_datetime: datetime = datetime(2030, 12, 31),  # noqa: DTZ001
+    ) -> None:
+        self.min_datetime = min_datetime.replace(tzinfo=None)
+        self.max_datetime = max_datetime.replace(tzinfo=None)
+
+    def __call__(self) -> datetime:
+        return _fake.date_time_between_dates(self.min_datetime, self.max_datetime)
+
+
+class DateField(AbstractField[date]):
+    def __init__(
+        self, min_date: date = date(2010, 1, 1), max_date: date = date(2030, 12, 31)
+    ) -> None:
+        self.min_date = min_date
+        self.max_date = max_date
+
+    def __call__(self) -> date:
+        return _fake.date_between_dates(self.min_date, self.max_date)
+
+
+class TimedeltaField(AbstractField[timedelta]):
+    def __init__(
+        self,
+        min_timedelta: timedelta = timedelta(0),
+        max_timedelta: timedelta = timedelta(days=365),
+    ) -> None:
+        self.min_timedelta = min_timedelta
+        self.max_timedelta = max_timedelta
+
+    def __call__(self) -> timedelta:
+        timedelta = _fake.time_delta(self.max_timedelta - self.min_timedelta)
+        return self.min_timedelta + timedelta
+
+
+class TimezoneField(AbstractField[ZoneInfo]):
+    def __init__(self, areas: tuple[str, ...] = ()) -> None:
+        areas = areas or (
+            "Africa",
+            "America",
+            "Antarctica",
+            "Arctic",
+            "Asia",
+            "Atlantic",
+            "Australia",
+            "Europe",
+            "Indian",
+            "Pacific",
+            "Etc",
+        )
+        self.valid_zones = [
+            ZoneInfo(zone)
+            for zone in get_timezones()
+            if any(zone.startswith(area) for area in areas)
+            or (zone == "UTC" and "Etc" in areas)
+        ]
+
+    def __call__(self) -> ZoneInfo:
+        return choice(self.valid_zones)
+
+
+class TimeField(AbstractField[time]):
+    def __init__(
+        self, *, min_time: time = time(0), max_time: time = time(23, 59, 59, 999999)
+    ) -> None:
+        self._day = date(1970, 1, 1)
+        self.min_time = min_time
+        self.max_time = max_time
+        self._min_datetime = datetime.combine(self._day, self.min_time)
+        self._max_datetime = datetime.combine(self._day, self.max_time)
+
+    def __call__(self) -> time:
+        timedelta = _fake.time_delta(self._max_datetime - self._min_datetime)
+        return (self._min_datetime + timedelta).time()
 
 
 class TextField(AbstractField[str]):

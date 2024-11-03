@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 from string import ascii_lowercase, ascii_uppercase, digits
 from typing import get_args
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -78,6 +80,64 @@ def test_string_field() -> None:
     string_field = fields.StringField(min_chars=10, max_chars=12, prefix="spam")
     assert 12 <= len(string_field()) <= 16
     assert string_field().startswith("spam")
+
+
+def test_date_field() -> None:
+    start_date = date(2021, 1, 1)
+    end_date = date(2021, 12, 31)
+    date_field = fields.DateField(min_date=start_date, max_date=end_date)
+    assert start_date <= date_field() <= end_date
+
+
+def test_time_field() -> None:
+    start_time = time(1, 0, 15, 100)
+    end_time = time(1, 0, 15, 200)
+    time_field = fields.TimeField(min_time=start_time, max_time=end_time)
+    assert start_time <= time_field() <= end_time
+
+
+def test_datetime_field() -> None:
+    london_tz = ZoneInfo("Europe/London")
+    paris_tz = ZoneInfo("Europe/Paris")
+    start_datetime = datetime(2021, 1, 1, 1, 0, 15, 100, tzinfo=london_tz)
+    end_datetime = datetime(2021, 12, 31, 1, 0, 15, 200, tzinfo=paris_tz)
+    datetime_field = fields.DateTimeField(
+        min_datetime=start_datetime, max_datetime=end_datetime
+    )
+    assert start_datetime <= datetime_field() <= end_datetime
+    assert datetime_field().tzinfo == london_tz
+
+
+def test_naive_datetime_field() -> None:
+    start_datetime = datetime(2021, 1, 1, 1, 0, 15, 100)  # noqa: DTZ001
+    end_datetime = datetime(2021, 12, 31, 1, 0, 15, 200)  # noqa: DTZ001
+    datetime_field = fields.NaiveDateTimeField(
+        min_datetime=start_datetime, max_datetime=end_datetime
+    )
+    assert start_datetime <= datetime_field() <= end_datetime
+    assert datetime_field().tzinfo is None
+
+
+def test_timedelta_field() -> None:
+    min_timedelta = timedelta(days=1)
+    max_timedelta = timedelta(days=10)
+    timedelta_field = fields.TimedeltaField(
+        min_timedelta=min_timedelta, max_timedelta=max_timedelta
+    )
+    assert min_timedelta <= timedelta_field() <= max_timedelta
+
+
+@pytest.mark.parametrize("areas", [(), ("Etc"), ("Europe", "Antarctica"), ("America",)])
+def test_timezone_field(areas: tuple[str, ...]) -> None:
+    timezone_field = fields.TimezoneField(areas)
+    assert isinstance(timezone_field(), ZoneInfo)
+
+
+@pytest.mark.parametrize("areas", [("Europe", "Antarctica"), ("America",)])
+def test_timezone_field_geographic_areas(areas: tuple[str, ...]) -> None:
+    timezone_field = fields.TimezoneField(areas)
+    assert isinstance(timezone_field(), ZoneInfo)
+    assert timezone_field().key.split("/")[0] in areas
 
 
 @pytest.mark.parametrize("text_type", get_args(TextType))
