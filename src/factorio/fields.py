@@ -13,8 +13,8 @@ from pyutilkit.date_utils import get_timezones
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from factorio.enums import TextType, UnstableTextType
     from factorio.factories import Factory
-    from factorio.types import TextType
 
 _fake = Faker()
 
@@ -227,12 +227,13 @@ class TimeField(AbstractField[time]):
 
 
 class TextField(AbstractField[str]):
-    def __init__(self, text_type: TextType, **kwargs: Any) -> None:
+    def __init__(self, text_type: TextType | UnstableTextType, **kwargs: Any) -> None:
         self.text_type = text_type
         self.kwargs = kwargs
 
     def __call__(self) -> str:
-        faker = getattr(_fake, self.text_type)
+        relaxed = self.text_type.lower().replace(" ", "_").replace("-", "_")
+        faker = getattr(_fake, relaxed)
         return cast(str, faker(**self.kwargs))
 
 

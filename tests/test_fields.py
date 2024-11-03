@@ -4,14 +4,13 @@ from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 from string import ascii_lowercase, ascii_uppercase, digits
-from typing import get_args
 from zoneinfo import ZoneInfo
 
 import pytest
 
 from factorio import fields
+from factorio.enums import TextType
 from factorio.factories import Factory
-from factorio.types import TextType
 
 
 def test_init_implementation_needed() -> None:
@@ -140,9 +139,9 @@ def test_timezone_field_geographic_areas(areas: tuple[str, ...]) -> None:
     assert timezone_field().key.split("/")[0] in areas
 
 
-@pytest.mark.parametrize("text_type", get_args(TextType))
-def test_text_field(text_type: TextType) -> None:
-    string_field = fields.TextField(text_type=text_type)
+@pytest.mark.parametrize("text_type", TextType.__members__.keys())
+def test_text_field(text_type: str) -> None:
+    string_field = fields.TextField(text_type=TextType[text_type])
     assert isinstance(string_field(), str)
 
 
