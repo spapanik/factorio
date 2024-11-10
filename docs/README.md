@@ -1,5 +1,6 @@
 # factorio: A fixtures replacement tool
 
+[![build][build_badge]][build_url]
 [![lint][lint_badge]][lint_url]
 [![tests][test_badge]][test_url]
 [![license][licence_badge]][licence_url]
@@ -24,6 +25,8 @@ Under the hood it uses [faker] to create realistic values for each field.
 -   [Documentation]
 -   [Changelog]
 
+[build_badge]: https://github.com/spapanik/factorio/actions/workflows/build.yml/badge.svg
+[build_url]: https://github.com/spapanik/factorio/actions/workflows/build.yml
 [lint_badge]: https://github.com/spapanik/factorio/actions/workflows/lint.yml/badge.svg
 [lint_url]: https://github.com/spapanik/factorio/actions/workflows/lint.yml
 [test_badge]: https://github.com/spapanik/factorio/actions/workflows/tests.yml/badge.svg
