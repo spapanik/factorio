@@ -16,10 +16,7 @@ class Factory(Generic[T]):
         candidates: set[type] = set()
         for base in getmro(cls):
             for original_base in getattr(base, "__orig_bases__", ()):
-                try:
-                    args = original_base.__args__
-                except AttributeError:
-                    continue
+                args = getattr(original_base, "__args__", ())
                 candidates.update(arg for arg in args if not isinstance(arg, TypeVar))
 
         if len(candidates) > 1:
