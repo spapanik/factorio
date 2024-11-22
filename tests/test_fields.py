@@ -30,6 +30,10 @@ def test_call_implementation_needed() -> None:
         MyField()()
 
 
+def test_constant_field() -> None:
+    assert fields.ConstantField(42)() == 42
+
+
 def test_boolean_field() -> None:
     assert fields.BooleanField()() in {True, False}
 

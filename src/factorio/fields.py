@@ -31,6 +31,14 @@ class AbstractField(Generic[T]):
         raise NotImplementedError
 
 
+class ConstantField(AbstractField[T]):
+    def __init__(self, value: T) -> None:
+        self.value = value
+
+    def __call__(self) -> T:
+        return self.value
+
+
 class ChoiceField(AbstractField[T]):
     def __init__(self, options: Iterable[T]) -> None:
         self.options = list(options)
