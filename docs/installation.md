@@ -17,7 +17,7 @@ You can add `factorio` to your `pyproject.toml` file:
 ```toml
 [project]
 dependencies = [
-    "factorio~=0.3"",
+    "factorio~=0.6",
     ....
 ]
 ```
