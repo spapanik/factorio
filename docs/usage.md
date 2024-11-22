@@ -3,6 +3,8 @@
 Suppose we have two dataclasses like this:
 
 ```python
+from dataclasses import dataclass
+
 @dataclass
 class Spam:
     a: int
@@ -20,25 +22,18 @@ class Bacon:
 We can create factories for them using these factories:
 
 ```python
-class SpamFactory(Factory):
-    class Meta:
-        model = Spam
+from factorio import fields
+from factorio.factories import Factory
 
-    class Fields:
-        a = Field("int", max_value=42)
-        b = ChoiceField(range(21))
-        c = 1024
+class SpamFactory(Factory[Spam]):
+        a = fields.IntegerField(max_value=42)
+        b = fields.ChoiceField(range(21))
+        c = fields.ConstantField(1024)
 
-class BaconFactory(Factory):
-    class Meta:
-        model = Bacon
-
-    class Fields:
-        x = Field("int", max_value=4)
-        y = CollectionField(
-            Field("word"), container=list, min_length=3, max_length=7
-        )
-        z = FactoryField(SpamFactory)
+class BaconFactory(Factory[Bacon]):
+    x = fields.IntegerField(max_value=4)
+    y = fields.ListField(fields.StringField(max_chars=4), length=5, variation=2)
+    z = fields.FactoryField(SpamFactory)
 ```
 
 Then using the factories is as simple as:
