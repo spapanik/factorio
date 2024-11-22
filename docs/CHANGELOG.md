@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Changed
+
+-   The Fields class is no longer needed (deprecated to be removed in 0.7.0)
+
 ## [0.5.0] - 2024-11-03
 
 ### Changed
