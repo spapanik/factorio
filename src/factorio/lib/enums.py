@@ -2,7 +2,7 @@ from enum import Enum, auto, unique
 from typing import Any, cast
 
 
-class StrEnum(str, Enum):
+class StrEnum(str, Enum):  # TODO (py3.10): Import from enum
     @staticmethod
     def _generate_next_value_(
         name: str, start: int, count: int, last_values: list[Any]  # noqa: ARG004
@@ -11,6 +11,16 @@ class StrEnum(str, Enum):
 
     def __str__(self) -> str:
         return cast(str, self.value)
+
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, str):
+            return str(self.value) == value
+        return NotImplemented
+
+    def __ne__(self, value: object) -> bool:
+        if isinstance(value, str):
+            return not self.__eq__(value)
+        return NotImplemented
 
 
 @unique

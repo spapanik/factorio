@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fixed the StrEnum issues for py3.9/py3.10
+
 ## [0.6.0] - 2024-11-22
 
 ### Changed
