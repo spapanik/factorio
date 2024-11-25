@@ -13,8 +13,8 @@ from pyutilkit.date_utils import get_timezones
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from factorio.enums import TextType, UnstableTextType
     from factorio.factories import Factory
+    from factorio.lib.enums import TextType, UnstableTextType
 
 _fake = Faker()
 

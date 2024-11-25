@@ -1,4 +1,4 @@
-from factorio.enums import StrEnum
+from factorio.lib.enums import StrEnum
 
 
 def test_str() -> None:

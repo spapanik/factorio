@@ -9,8 +9,8 @@ from zoneinfo import ZoneInfo
 import pytest
 
 from factorio import fields
-from factorio.enums import TextType
 from factorio.factories import Factory
+from factorio.lib.enums import TextType
 
 
 def test_init_implementation_needed() -> None:
