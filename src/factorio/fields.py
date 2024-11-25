@@ -10,6 +10,8 @@ from zoneinfo import ZoneInfo
 from faker import Faker
 from pyutilkit.date_utils import get_timezones
 
+from factorio.lib.enums import EmailType
+
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
@@ -232,6 +234,24 @@ class TimeField(AbstractField[time]):
     def __call__(self) -> time:
         timedelta = _fake.time_delta(self._max_datetime - self._min_datetime)
         return (self._min_datetime + timedelta).time()
+
+
+class EmailField(AbstractField[str]):
+    def __init__(
+        self, email_type: EmailType = EmailType.SAFE, *, force_ascii: bool = False
+    ) -> None:
+        if email_type == EmailType.SAFE:
+            email_type_name = "safe_email"
+        elif email_type == EmailType.FREE:
+            email_type_name = "free_email"
+        elif email_type == EmailType.COMPANY:
+            email_type_name = "company_email"
+        if force_ascii:
+            self.email_type = f"ascii_{email_type_name}"
+
+    def __call__(self) -> str:
+        faker = getattr(_fake, self.email_type)
+        return cast(str, faker())
 
 
 class TextField(AbstractField[str]):

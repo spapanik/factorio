@@ -13,6 +13,12 @@ class StrEnum(str, Enum):
         return cast(str, self.value)
 
 
+class EmailType(StrEnum):
+    SAFE = auto()
+    FREE = auto()
+    COMPANY = auto()
+
+
 class TextType(StrEnum):
     COLOR_NAME = auto()
     FILE_NAME = auto()
