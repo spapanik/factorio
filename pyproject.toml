@@ -6,7 +6,7 @@ build-backend = "phosphorus.construction.api"
 
 [project]
 name = "factorio"
-version = "0.6.0"
+version = "0.6.1"
 
 authors = [
     { name = "Stephanos Kuma", email = "stephanos@kuma.ai" },
