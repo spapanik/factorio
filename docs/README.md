@@ -44,6 +44,6 @@ Under the hood it uses [faker] to create realistic values for each field.
 [ruff_badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json
 [ruff_url]: https://github.com/charliermarsh/ruff
 [Documentation]: https://factorio.readthedocs.io/en/stable/
-[Changelog]: https://github.com/spapanik/factorio/blob/main/docs/CHANGELOG.md
+[Changelog]: https://factorio.readthedocs.io/en/stable/CHANGELOG/
 [factory_boy]: https://github.com/FactoryBoy/factory_boy
 [faker]: https://github.com/joke2k/faker
