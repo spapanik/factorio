@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum, auto, unique
 from typing import Any, cast
 
 
@@ -13,11 +13,13 @@ class StrEnum(str, Enum):
         return cast(str, self.value)
 
 
+@unique
 class TextType(StrEnum):
     COLOR_NAME = auto()
     FILE_NAME = auto()
 
 
+@unique
 class UnstableTextType(StrEnum):
     ABA = auto()
     ADDRESS = auto()
