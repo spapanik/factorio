@@ -26,9 +26,9 @@ from factorio import fields
 from factorio.factories import Factory
 
 class SpamFactory(Factory[Spam]):
-        a = fields.IntegerField(max_value=42)
-        b = fields.ChoiceField(range(21))
-        c = fields.ConstantField(1024)
+    a = fields.IntegerField(max_value=42)
+    b = fields.ChoiceField(range(21))
+    c = fields.ConstantField(1024)
 
 class BaconFactory(Factory[Bacon]):
     x = fields.IntegerField(max_value=4)
