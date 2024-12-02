@@ -1,5 +1,7 @@
-class RemovedIn07Warning(FutureWarning):
+class RemovedIn08Warning(FutureWarning):  # pragma: no cover
+    version = "0.8.0"
+
     def __init__(self, deprecated_feature: str, alternative: str) -> None:
         super().__init__(
-            f"{deprecated_feature} is deprecated and will be removed in `v0.7.0`. Use {alternative} instead."
+            f"{deprecated_feature} is deprecated and will be removed in `v{self.version}`. Use {alternative} instead."
         )

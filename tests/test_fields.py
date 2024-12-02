@@ -195,8 +195,7 @@ def test_factory_field() -> None:
         a: int
 
     class SpamFactory(Factory[Spam]):
-        class Fields:
-            a = fields.IntegerField(max_value=42)
+        a = fields.IntegerField(max_value=42)
 
     factory_field = fields.FactoryField(SpamFactory)
     assert 0 <= factory_field().a <= 42
