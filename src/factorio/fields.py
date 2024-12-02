@@ -47,11 +47,11 @@ class ChoiceField(AbstractField[T]):
         return choice(self.options)
 
 
-class BooleanField(AbstractField[int]):
+class BooleanField(AbstractField[bool]):
     def __init__(self, truth_probability: int = 50) -> None:
         self.truth_probability = truth_probability
 
-    def __call__(self) -> int:
+    def __call__(self) -> bool:
         return _fake.pybool(truth_probability=self.truth_probability)
 
 
@@ -306,5 +306,5 @@ class FactoryField(AbstractField[T]):
     def __init__(self, factory: type[Factory[T]]) -> None:
         self.factory = factory
 
-    def __call__(self) -> Any:
+    def __call__(self) -> T:
         return self.factory.build()
