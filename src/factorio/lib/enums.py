@@ -1,11 +1,11 @@
 from enum import Enum, auto, unique
-from typing import Any, cast
+from typing import cast
 
 
-class StrEnum(str, Enum):  # TODO (py3.10): Import from enum
+class StrEnum(str, Enum):  # py3.10: Import from enum
     @staticmethod
     def _generate_next_value_(
-        name: str, start: int, count: int, last_values: list[Any]  # noqa: ARG004
+        name: str, start: int, count: int, last_values: list[object]  # noqa: ARG004
     ) -> str:
         return name.lower()
 
