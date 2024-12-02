@@ -32,7 +32,7 @@ Under the hood it uses [faker] to create realistic values for each field.
 [test_badge]: https://github.com/spapanik/factorio/actions/workflows/tests.yml/badge.svg
 [test_url]: https://github.com/spapanik/factorio/actions/workflows/tests.yml
 [licence_badge]: https://img.shields.io/pypi/l/factorio
-[licence_url]: https://github.com/spapanik/factorio/blob/main/docs/LICENSE.md
+[licence_url]: https://factorio.readthedocs.io/en/stable/LICENSE/
 [pypi_badge]: https://img.shields.io/pypi/v/factorio
 [pypi_url]: https://pypi.org/project/factorio
 [pepy_badge]: https://pepy.tech/badge/factorio
