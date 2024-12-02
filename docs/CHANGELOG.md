@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fixed typing info for BooleanField
+
 ### Removed
 
 -   Dropped support factories with a Fields class
