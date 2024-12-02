@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from inspect import getmro
-from typing import Any, Generic, TypeVar
+from typing import Generic, TypeVar
 
 from factorio.fields import AbstractField
 
@@ -30,7 +30,7 @@ class Factory(Generic[T]):
         return candidates.pop()
 
     @classmethod
-    def build(cls, **kwargs: Any) -> T:
+    def build(cls, **kwargs: object) -> T:
         model = cls.get_model()
         fields = {
             key: value()

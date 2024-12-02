@@ -4,7 +4,7 @@ import string
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 from secrets import choice
-from typing import TYPE_CHECKING, Any, Generic, TypeVar, cast
+from typing import TYPE_CHECKING, Generic, TypeVar, cast
 from zoneinfo import ZoneInfo
 
 from faker import Faker
@@ -24,7 +24,7 @@ UTC = ZoneInfo("UTC")
 
 
 class AbstractField(Generic[T]):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: object, **kwargs: object) -> None:
         raise NotImplementedError
 
     def __call__(self) -> T:
@@ -234,7 +234,9 @@ class TimeField(AbstractField[time]):
 
 
 class TextField(AbstractField[str]):
-    def __init__(self, text_type: TextType | UnstableTextType, **kwargs: Any) -> None:
+    def __init__(
+        self, text_type: TextType | UnstableTextType, **kwargs: object
+    ) -> None:
         self.text_type = text_type
         self.kwargs = kwargs
 
