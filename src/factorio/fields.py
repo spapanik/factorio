@@ -84,7 +84,6 @@ class DecimalField(AbstractField[Decimal]):
 
     def __call__(self) -> Decimal:
         right_digits = _fake.pyint(min_value=self.min_length, max_value=self.max_length)
-        print(self.min_value, self.max_value, right_digits)
         return _fake.pydecimal(
             min_value=self.min_value,  # type: ignore[arg-type]
             max_value=self.max_value,  # type: ignore[arg-type]
