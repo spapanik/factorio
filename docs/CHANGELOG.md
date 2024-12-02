@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Removed
+
+-   Dropped support factories with a Fields class
+
 ## [0.6.1] - 2024-11-25
 
 ### Fixed
