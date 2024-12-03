@@ -30,7 +30,7 @@ classifiers = [
 requires-python = ">=3.9"
 dependencies = [
     "faker>=30.8",
-    "pyutilkit>=0.6",
+    "pyutilkit~=0.6",
     "tzdata; os_name == 'nt'",
 ]
 
