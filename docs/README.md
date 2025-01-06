@@ -2,7 +2,7 @@
 
 [![build][build_badge]][build_url]
 [![lint][lint_badge]][lint_url]
-[![tests][test_badge]][test_url]
+[![tests][tests_badge]][tests_url]
 [![license][licence_badge]][licence_url]
 [![codecov][codecov_badge]][codecov_url]
 [![readthedocs][readthedocs_badge]][readthedocs_url]
@@ -31,8 +31,8 @@ Under the hood it uses [faker] to create realistic values for each field.
 [build_url]: https://github.com/spapanik/factorio/actions/workflows/build.yml
 [lint_badge]: https://github.com/spapanik/factorio/actions/workflows/lint.yml/badge.svg
 [lint_url]: https://github.com/spapanik/factorio/actions/workflows/lint.yml
-[test_badge]: https://github.com/spapanik/factorio/actions/workflows/tests.yml/badge.svg
-[test_url]: https://github.com/spapanik/factorio/actions/workflows/tests.yml
+[tests_badge]: https://github.com/spapanik/factorio/actions/workflows/tests.yml/badge.svg
+[tests_url]: https://github.com/spapanik/factorio/actions/workflows/tests.yml
 [licence_badge]: https://img.shields.io/pypi/l/factorio
 [licence_url]: https://factorio.readthedocs.io/en/stable/LICENSE/
 [codecov_badge]: https://codecov.io/github/spapanik/factorio/graph/badge.svg?token=Q20F84BW72
