@@ -4,6 +4,8 @@
 [![lint][lint_badge]][lint_url]
 [![tests][test_badge]][test_url]
 [![license][licence_badge]][licence_url]
+[![codecov][codecov_badge]][codecov_url]
+[![readthedocs][readthedocs_badge]][readthedocs_url]
 [![pypi][pypi_badge]][pypi_url]
 [![downloads][pepy_badge]][pepy_url]
 [![code style: black][black_badge]][black_url]
@@ -33,6 +35,10 @@ Under the hood it uses [faker] to create realistic values for each field.
 [test_url]: https://github.com/spapanik/factorio/actions/workflows/tests.yml
 [licence_badge]: https://img.shields.io/pypi/l/factorio
 [licence_url]: https://factorio.readthedocs.io/en/stable/LICENSE/
+[codecov_badge]: https://codecov.io/github/spapanik/factorio/graph/badge.svg?token=Q20F84BW72
+[codecov_url]: https://codecov.io/github/spapanik/factorio
+[readthedocs_badge]: https://readthedocs.org/projects/factorio/badge/?version=latest
+[readthedocs_url]: https://factorio.readthedocs.io/en/latest/
 [pypi_badge]: https://img.shields.io/pypi/v/factorio
 [pypi_url]: https://pypi.org/project/factorio
 [pepy_badge]: https://pepy.tech/badge/factorio
