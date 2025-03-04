@@ -3,5 +3,6 @@ class RemovedIn08Warning(FutureWarning):  # pragma: no cover
 
     def __init__(self, deprecated_feature: str, alternative: str) -> None:
         super().__init__(
-            f"{deprecated_feature} is deprecated and will be removed in `v{self.version}`. Use {alternative} instead."
+            f"{deprecated_feature} is deprecated and will be removed in "
+            f"`v{self.version}`. Use {alternative} instead."
         )
