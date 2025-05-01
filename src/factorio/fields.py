@@ -243,7 +243,7 @@ class TextField(AbstractField[str]):
     def __call__(self) -> str:
         relaxed = self.text_type.lower().replace(" ", "_").replace("-", "_")
         faker = getattr(_fake, relaxed)
-        return cast(str, faker(**self.kwargs))
+        return cast("str", faker(**self.kwargs))
 
 
 class ListField(AbstractField[list[T]]):

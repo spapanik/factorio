@@ -13,7 +13,7 @@ class StrEnum(str, Enum):  # upgrade: py3.10: Import from enum
         return name.lower()
 
     def __str__(self) -> str:
-        return cast(str, self.value)
+        return cast("str", self.value)
 
     def __eq__(self, value: object) -> bool:
         if isinstance(value, str):
