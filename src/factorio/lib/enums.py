@@ -20,6 +20,9 @@ class StrEnum(str, Enum):  # upgrade: py3.10: Import from enum
             return str(self.value) == value
         return NotImplemented
 
+    def __hash__(self) -> int:
+        return hash(str(self.value))
+
     def __ne__(self, value: object) -> bool:
         if isinstance(value, str):
             return not self.__eq__(value)
