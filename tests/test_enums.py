@@ -10,12 +10,19 @@ def test_str() -> None:
     assert str(MyEnum.BAR) == "bar"
 
 
+def test_hash() -> None:
+    class MyEnum(StrEnum):
+        FOO = "foo"
+
+    assert hash(MyEnum.FOO) == hash("foo")
+
+
 def test_eq() -> None:
     class MyEnum(StrEnum):
         FOO = "foo"
         BAR = "bar"
 
-    class Equal:
+    class Equal:  # noqa: PLW1641
         def __eq__(self, other: object) -> bool:
             return True
 
