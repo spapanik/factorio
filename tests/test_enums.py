@@ -15,7 +15,7 @@ def test_eq() -> None:
         FOO = "foo"
         BAR = "bar"
 
-    class Equal:
+    class Equal:  # noqa: PLW1641
         def __eq__(self, other: object) -> bool:
             return True
 

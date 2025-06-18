@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 ### Removed
 
 - Dropped support factories with a Fields class
+- Dropped python 3.9 support
 
 ## [0.6.1] - 2024-11-25
 
@@ -69,7 +70,7 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 - Added a simple field, a collection field and a factory field
 
-[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+[Keep a Changelog]: https://keepachangelog.com/en/1.1.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 [Unreleased]: https://github.com/spapanik/factorio/compare/v0.6.1...main
 [0.6.1]: https://github.com/spapanik/factorio/compare/v0.6.0...v0.6.1
