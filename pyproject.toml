@@ -6,7 +6,9 @@ build-backend = "phosphorus.construction.api"
 
 [project]
 name = "factorio"
-version = "0.6.1"
+dynamic = [
+    "version",
+]
 
 authors = [
     { name = "Stephanos Kuma", email = "stephanos@kuma.ai" },
@@ -43,21 +45,23 @@ documentation = "https://factorio.readthedocs.io/en/stable/"
 dev = [
     "ipdb~=0.13",
     "ipython~=8.37",
+    "ptpython~=3.0",
     { include-group = "lint" },
     { include-group = "test" },
     { include-group = "docs" },
 ]
 lint = [
-    "ty~=0.0.1a20",
-    "ruff~=0.12",
+    "mypy~=1.18",  # Keep mypy for CI/CD
+    "ty~=0.0.1a21",
+    "ruff~=0.13",
     { include-group = "test_core" },
 ]
 test = [
-    "pytest-cov~=6.2",
+    "pytest-cov~=7.0",
     { include-group = "test_core" },
 ]
 test_core = [
-    "pytest~=8.4",
+    "pytest~=9.0",
 ]
 docs = [
     "mkdocs~=1.6",
@@ -66,6 +70,9 @@ docs = [
     "pygments~=2.19",
     "pymdown-extensions~=10.15",
 ]
+
+[tool.phosphorus.dynamic.version]
+file = "src/factorio/__version__.py"
 
 [tool.mypy]
 # Keep mypy for CI/CD
@@ -137,9 +144,13 @@ forced-separate = [
 ]
 split-on-trailing-comma = false
 
-[tool.pytest.ini_options]
-addopts = "-ra -v"
-testpaths = "tests"
+[tool.pytest]
+minversion = "9.0"
+strict = true
+addopts = ["-ra", "-v"]
+testpaths = [
+    "tests",
+]
 
 [tool.coverage.run]
 branch = true
@@ -148,7 +159,7 @@ source = [
 ]
 data_file = ".cov_cache/coverage.dat"
 omit = [
-    "src/factorio/lib/type_defs.py",
+    "src/**/type_defs.py",
 ]
 
 [tool.coverage.report]
