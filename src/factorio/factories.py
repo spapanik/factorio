@@ -13,7 +13,7 @@ class Factory(Generic[T]):
 
     @classmethod
     def get_model(cls) -> type[T]:
-        candidates: set[type] = set()
+        candidates: set[type[T]] = set()
         for base in getmro(cls):
             for original_base in getattr(base, "__orig_bases__", ()):
                 args = getattr(original_base, "__args__", ())
