@@ -1,5 +1,10 @@
+from __future__ import annotations
+
+import warnings
 from enum import Enum, auto, unique
 from typing import cast
+
+from factorio.lib.exceptions import RemovedIn08Warning
 
 
 class StrEnum(str, Enum):  # upgrade: py3.10: Import from enum
@@ -221,3 +226,9 @@ class UnstableTextType(StrEnum):
     ZIPCODE = auto()
     ZIPCODE_IN_STATE = auto()
     ZIPCODE_PLUS4 = auto()
+
+
+warnings.warn(
+    RemovedIn08Warning("TextType", "explicit strings"),
+    stacklevel=2,
+)

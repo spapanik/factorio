@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 - Fixed typing info for BooleanField
 
+### Deprecated
+
+- Deprecated the TextType enums (to be removed in 0.8.0)
+
 ### Removed
 
 - Dropped support factories with a Fields class

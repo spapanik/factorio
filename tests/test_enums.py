@@ -1,7 +1,10 @@
-from factorio.lib.enums import StrEnum
+import pytest
 
 
+@pytest.mark.filterwarnings("ignore:TextType")
 def test_str() -> None:
+    from factorio.lib.enums import StrEnum  # noqa: PLC0415
+
     class MyEnum(StrEnum):
         FOO = "foo"
         BAR = "bar"
@@ -10,14 +13,20 @@ def test_str() -> None:
     assert str(MyEnum.BAR) == "bar"
 
 
+@pytest.mark.filterwarnings("ignore:TextType")
 def test_hash() -> None:
+    from factorio.lib.enums import StrEnum  # noqa: PLC0415
+
     class MyEnum(StrEnum):
         FOO = "foo"
 
     assert hash(MyEnum.FOO) == hash("foo")
 
 
+@pytest.mark.filterwarnings("ignore:TextType")
 def test_eq() -> None:
+    from factorio.lib.enums import StrEnum  # noqa: PLC0415
+
     class MyEnum(StrEnum):
         FOO = "foo"
         BAR = "bar"

@@ -14,7 +14,6 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
     from factorio.factories import Factory
-    from factorio.lib.enums import TextType, UnstableTextType
 
 _fake = Faker()
 
@@ -234,9 +233,7 @@ class TimeField(AbstractField[time]):
 
 
 class TextField(AbstractField[str]):
-    def __init__(
-        self, text_type: TextType | UnstableTextType, **kwargs: object
-    ) -> None:
+    def __init__(self, text_type: str, **kwargs: object) -> None:
         self.text_type = text_type
         self.kwargs = kwargs
 

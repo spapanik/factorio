@@ -10,7 +10,6 @@ import pytest
 
 from factorio import fields
 from factorio.factories import Factory
-from factorio.lib.enums import TextType
 
 
 def test_init_implementation_needed() -> None:
@@ -143,9 +142,9 @@ def test_timezone_field_geographic_areas(areas: tuple[str, ...]) -> None:
     assert timezone_field().key.split("/")[0] in areas
 
 
-@pytest.mark.parametrize("text_type", TextType.__members__.keys())
+@pytest.mark.parametrize("text_type", ["color_name", "file_name", "company", "email"])
 def test_text_field(text_type: str) -> None:
-    string_field = fields.TextField(text_type=TextType[text_type])
+    string_field = fields.TextField(text_type=text_type)
     assert isinstance(string_field(), str)
 
 
