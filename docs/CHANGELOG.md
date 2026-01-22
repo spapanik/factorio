@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-01-22
+
 ### Fixed
 
 - Fixed typing info for BooleanField
