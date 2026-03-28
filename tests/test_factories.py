@@ -26,7 +26,7 @@ def test_get_multiple_models() -> None:
     class BaconFactory(Factory[Bacon]):
         pass
 
-    class SpamAndBaconFactory(SpamFactory, BaconFactory):
+    class SpamAndBaconFactory(SpamFactory, BaconFactory):  # ty: ignore[invalid-generic-class]
         pass
 
     with pytest.raises(TypeError):
