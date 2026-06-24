@@ -21,10 +21,57 @@ shouldn't be the responsibility of the factory.
 
 Under the hood it uses [faker] to create realistic values for each field.
 
+## Quick Start
+
+```python
+from dataclasses import dataclass
+from factorio import fields
+from factorio.factories import Factory
+
+@dataclass
+class User:
+    name: str
+    email: str
+    age: int
+
+class UserFactory(Factory[User]):
+    name = fields.TextField("name")
+    email = fields.TextField("email")
+    age = fields.IntegerField(min_value=18, max_value=65)
+
+user = UserFactory.build()
+# user.name might be "Sarah Johnson"
+# user.email might be "sarah.johnson@example.com"
+# user.age might be 34
+```
+
+## Key Features
+
+- **🎯 Explicit Object Creation**: Requires `.build()` method for clarity and safety
+- **🚫 No Database Interaction**: Factories generate data, tests handle persistence
+- **✨ Realistic Data**: Powered by Faker for lifelike test data
+- **🔧 20+ Field Types**: From primitives to collections and nested factories
+- **🎨 Flexible Overrides**: Override fields with values or dynamic field instances
+- **📦 ORM Agnostic**: Works with dataclasses, Pydantic, SQLAlchemy, and more
+- **🛡️ Type Safe**: Full type hints and mypy support
+
+## Documentation
+
+- **[Installation Guide](installation.md)** - Get started with factorio
+- **[Usage Guide](usage.md)** - Basic to advanced usage patterns
+- **[Field Reference](api/fields.md)** - Complete API reference for all field types
+- **[Factory API](api/factory.md)** - Factory class documentation
+- **[Integration Guides](integrations/)** - SQLAlchemy, Pydantic, and dataclasses
+- **[Cookbook](cookbook.md)** - Common patterns and recipes
+- **[Advanced Guide](guides/advanced.md)** - Advanced techniques and optimizations
+- **[Changelog](CHANGELOG.md)** - Version history and changes
+
 ## Links
 
-- [Documentation]
-- [Changelog]
+- [Full Documentation](https://factorio.readthedocs.io/en/stable/)
+- [Changelog](CHANGELOG.md)
+- [GitHub Repository](https://github.com/spapanik/factorio)
+- [PyPI Package](https://pypi.org/project/factorio)
 
 [build_badge]: https://github.com/spapanik/factorio/actions/workflows/build.yml/badge.svg
 [build_url]: https://github.com/spapanik/factorio/actions/workflows/build.yml
