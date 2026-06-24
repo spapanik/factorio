@@ -4,12 +4,24 @@ repo_url: https://github.com/spapanik/factorio
 
 nav:
   - Home: README.md
-  - Installation: installation.md
-  - Usage: usage.md
+  - Getting Started:
+    - Installation: installation.md
+    - Quick Start: usage.md
+  - API Reference:
+    - Factory: api/factory.md
+    - Fields: api/fields.md
+    - Enums: api/enums.md
+  - Guides:
+    - Integration Guides:
+      - SQLAlchemy: integrations/sqlalchemy.md
+      - Pydantic: integrations/pydantic.md
+      - Dataclasses: integrations/dataclasses.md
+    - Advanced Usage: guides/advanced.md
+  - Cookbook: cookbook.md
   - About:
-      - License: LICENSE.md
-      - Changelog: CHANGELOG.md
-      - Code of Conduct: CODE_OF_CONDUCT.md
+    - License: LICENSE.md
+    - Changelog: CHANGELOG.md
+    - Code of Conduct: CODE_OF_CONDUCT.md
 
 markdown_extensions:
   - pymdownx.highlight:
