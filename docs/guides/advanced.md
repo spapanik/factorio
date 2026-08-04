@@ -12,20 +12,22 @@ Combine collection fields to create complex data structures:
 from factorio import fields
 from factorio.factories import Factory
 
+
 @dataclass
 class Matrix:
     rows: list[list[int]]
 
+
 class MatrixFactory(Factory[Matrix]):
     rows = fields.ListField(
         field=fields.ListField(
-            field=fields.IntegerField(min_value=0, max_value=100),
-            length=3
+            field=fields.IntegerField(min_value=0, max_value=100), length=3
         ),
-        length=3
+        length=3,
     )
     # Generates 3x3 matrices like:
     # [[45, 67, 23], [12, 89, 34], [56, 78, 90]]
+
 
 matrix = MatrixFactory.build()
 assert len(matrix.rows) == 3
@@ -41,16 +43,20 @@ Create dictionaries with varied key/value types:
 class Config:
     settings: dict[str, object]
 
+
 class ConfigFactory(Factory[Config]):
     settings = fields.DictField(
         key_field=fields.StringField(min_chars=3, max_chars=10),
-        value_field=fields.ChoiceField([
-            fields.IntegerField(min_value=1, max_value=100),
-            fields.TextField("word"),
-            fields.BooleanField(),
-        ]),
-        length=5
+        value_field=fields.ChoiceField(
+            [
+                fields.IntegerField(min_value=1, max_value=100),
+                fields.TextField("word"),
+                fields.BooleanField(),
+            ]
+        ),
+        length=5,
     )
+
 
 config = ConfigFactory.build()
 for key, value in config.settings.items():
@@ -65,7 +71,7 @@ class ConfigFactory(Factory[Config]):
     settings = fields.DictField(
         key_field=fields.StringField(min_chars=3, max_chars=10),
         value_field=fields.TextField("word"),  # All string values
-        length=5
+        length=5,
     )
 ```
 
@@ -104,15 +110,13 @@ class UserProfileFactory(Factory[UserProfile]):
     @classmethod
     def build_complete(cls, **kwargs):
         """Build with all fields populated."""
-        return cls.build(
-            bio=fields.TextField("paragraph", nb_sentences=3),
-            **kwargs
-        )
+        return cls.build(bio=fields.TextField("paragraph", nb_sentences=3), **kwargs)
 
     @classmethod
     def build_minimal(cls, **kwargs):
         """Build with minimal fields."""
         return cls.build(bio=None, **kwargs)
+
 
 # Usage
 complete_profile = UserProfileFactory.build_complete()
@@ -138,6 +142,7 @@ def create_user_factory(age_range: tuple[int, int]):
 
     return DynamicUserFactory
 
+
 # Create specialized factories
 teen_factory = create_user_factory((13, 19))
 adult_factory = create_user_factory((18, 65))
@@ -162,6 +167,7 @@ class UserFactory(Factory[User]):
     email = fields.TextField("email")
     age = fields.IntegerField(min_value=18, max_value=65)
     role = fields.ChoiceField(["user", "admin", "moderator"])
+
 
 def test_role_permissions():
     # Start with random user
@@ -196,6 +202,7 @@ class PricingFactory(Factory[Pricing]):
 
         return instance
 
+
 pricing = PricingFactory.build()
 expected = pricing.base_price * (1 - pricing.discount_percent / 100)
 assert abs(pricing.final_price - expected) < Decimal("0.01")
@@ -220,6 +227,7 @@ class ExpensiveFactory(Factory[Model]):
             cls._cache[cache_key] = cls.build()
         return cls._cache[cache_key]
 
+
 # Reuse cached instances when appropriate
 obj1 = ExpensiveFactory.build_cached()
 obj2 = ExpensiveFactory.build_cached()
@@ -238,6 +246,7 @@ def user_generator(count: int):
     for _ in range(count):
         yield UserFactory.build()
 
+
 # Process one at a time (memory efficient)
 for user in user_generator(10000):
     process(user)
@@ -253,6 +262,7 @@ Combine factorio with property-based testing:
 ```python
 import hypothesis
 from hypothesis import given
+
 
 @given(
     name=hypothesis.strategies.text(min_size=1, max_size=100),
@@ -279,10 +289,12 @@ def test_boundary_ages():
         user = UserFactory.build(age=age)
         assert user.age == age
 
+
 def test_empty_strings():
     user = UserFactory.build(name="", bio="")
     assert user.name == ""
     assert user.bio == ""
+
 
 def test_maximum_values():
     product = ProductFactory.build(
@@ -298,6 +310,7 @@ Save and replay specific test cases:
 ```python
 import json
 
+
 def test_with_saved_case():
     # Load previously saved test case
     with open("test_cases/user_case_1.json") as f:
@@ -307,6 +320,7 @@ def test_with_saved_case():
 
     # Verify behavior with known inputs
     assert user.is_adult == (user.age >= 18)
+
 
 def save_test_case(user: User, case_name: str):
     """Save a test case for regression testing."""
@@ -335,11 +349,9 @@ class OrderSystem:
     def create_complete_order(self):
         user = self.user_factory.build()
         products = [self.product_factory.build() for _ in range(3)]
-        order = self.order_factory.build(
-            customer=user,
-            items=products
-        )
+        order = self.order_factory.build(customer=user, items=products)
         return order
+
 
 system = OrderSystem()
 order = system.create_complete_order()
@@ -368,6 +380,7 @@ class FactoryRegistry:
         factory = cls.get(model)
         return factory.build(**kwargs)
 
+
 # Register factories
 FactoryRegistry.register(User, UserFactory)
 FactoryRegistry.register(Product, ProductFactory)
@@ -384,6 +397,7 @@ Use factories with mocking libraries:
 
 ```python
 from unittest.mock import Mock, patch
+
 
 def test_with_mock():
     # Create realistic mock data
@@ -417,6 +431,7 @@ def inspect_factory(factory_class: type[Factory]):
         if isinstance(value, AbstractField):
             print(f"  - {name}: {type(value).__name__}")
 
+
 inspect_factory(UserFactory)
 # Output:
 # Factory: UserFactory
@@ -447,6 +462,7 @@ def sample_field(factory_class: type[Factory], field_name: str, samples: int = 1
 
     if isinstance(values[0], (int, float)):
         print(f"Average: {sum(values) / len(values):.2f}")
+
 
 sample_field(UserFactory, "age")
 ```
@@ -483,12 +499,8 @@ def test_all_generated_data_valid():
 ```python
 # ❌ Too complex
 class OverengineeredFactory(Factory[Model]):
-    field1 = fields.StringField(
-        min_chars=5,
-        max_chars=10,
-        prefix="PRE-",
-        suffix="-SUF"
-    )
+    field1 = fields.StringField(min_chars=5, max_chars=10, prefix="PRE-", suffix="-SUF")
+
 
 # ✅ Simple and clear
 class SimpleFactory(Factory[Model]):
@@ -503,6 +515,7 @@ class BadFactory(Factory[User]):
     name = fields.ConstantField("John Doe")
     email = fields.ConstantField("john@example.com")
 
+
 # ✅ Randomized data
 class GoodFactory(Factory[User]):
     name = fields.TextField("name")
@@ -516,6 +529,7 @@ class GoodFactory(Factory[User]):
 class UntypedFactory(Factory):
     name = fields.TextField("name")
 
+
 # ✅ Properly typed
 class TypedFactory(Factory[User]):
     name = fields.TextField("name")
@@ -528,12 +542,15 @@ class TypedFactory(Factory[User]):
 class AFactory(Factory[A]):
     b = fields.FactoryField(BFactory)
 
+
 class BFactory(Factory[B]):
     a = fields.FactoryField(AFactory)  # Infinite loop!
+
 
 # ✅ Break the cycle
 class AFactory(Factory[A]):
     b_id = fields.IntegerField(min_value=1, max_value=100)
+
 
 class BFactory(Factory[B]):
     a_id = fields.IntegerField(min_value=1, max_value=100)

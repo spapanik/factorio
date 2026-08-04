@@ -22,10 +22,12 @@ Member values are automatically generated as lowercase versions of their names:
 from factorio.lib.enums import StrEnum
 from enum import auto
 
+
 class Color(StrEnum):
     RED = auto()
     GREEN = auto()
     BLUE = auto()
+
 
 assert Color.RED == "red"
 assert Color.GREEN == "green"
@@ -42,6 +44,7 @@ class Status(StrEnum):
     INACTIVE = auto()
     PENDING = auto()
 
+
 assert Status.ACTIVE == "active"
 assert Status.ACTIVE == "ACTIVE"
 assert Status.ACTIVE == "Active"
@@ -57,6 +60,7 @@ class Priority(StrEnum):
     LOW = auto()
     MEDIUM = auto()
     HIGH = auto()
+
 
 # String methods work
 assert Priority.HIGH.upper() == "HIGH"
@@ -82,6 +86,7 @@ class Role(StrEnum):
     USER = auto()
     GUEST = auto()
 
+
 # Can be used in sets and dicts
 role_set = {Role.ADMIN, Role.USER}
 assert "admin" in role_set  # String lookup works
@@ -101,6 +106,7 @@ class Mode(StrEnum):
     DEBUG = auto()
     RELEASE = auto()
 
+
 assert str(Mode.DEBUG) == "debug"
 print(Mode.RELEASE)  # Prints: release
 ```
@@ -110,6 +116,7 @@ print(Mode.RELEASE)  # Prints: release
 Compares the enum member with another value. Supports comparison with strings (case-insensitive).
 
 **Parameters:**
+
 - `value`: The value to compare against (str or StrEnum)
 
 **Returns:** `True` if equal, `False` otherwise
@@ -118,6 +125,7 @@ Compares the enum member with another value. Supports comparison with strings (c
 class State(StrEnum):
     ON = auto()
     OFF = auto()
+
 
 assert State.ON == "on"
 assert State.ON == "ON"
@@ -157,6 +165,7 @@ class ConfigKey(StrEnum):
     API_KEY = auto()
     DEBUG_MODE = auto()
 
+
 config = {
     ConfigKey.DATABASE_URL: "postgresql://localhost/db",
     ConfigKey.API_KEY: "secret123",
@@ -176,6 +185,7 @@ class HttpStatus(StrEnum):
     NOT_FOUND = auto()
     ERROR = auto()
 
+
 def handle_response(status: HttpStatus):
     if status == "ok":
         return "Success"
@@ -183,6 +193,7 @@ def handle_response(status: HttpStatus):
         return "Resource not found"
     else:
         return "Error occurred"
+
 
 assert handle_response(HttpStatus.OK) == "Success"
 ```
@@ -196,6 +207,7 @@ class OrderState(StrEnum):
     SHIPPED = auto()
     DELIVERED = auto()
     CANCELLED = auto()
+
 
 class Order:
     def __init__(self):
@@ -214,6 +226,7 @@ class Order:
 
         self.state = new_state
 
+
 order = Order()
 order.transition(OrderState.PROCESSING)
 assert order.state == "processing"
@@ -230,6 +243,7 @@ assert order.state == "processing"
 `TextType` was a limited enum providing two text type constants. It has been superseded by direct string usage with `TextField`.
 
 **Members:**
+
 - `COLOR_NAME` → `"color_name"`
 - `FILE_NAME` → `"file_name"`
 
@@ -241,9 +255,11 @@ Replace `TextType` with explicit strings:
 # ❌ Old (deprecated)
 from factorio.lib.enums import TextType
 
+
 class OldFactory(Factory[Model]):
     color = fields.TextField(TextType.COLOR_NAME)
     filename = fields.TextField(TextType.FILE_NAME)
+
 
 # ✅ New (recommended)
 class NewFactory(Factory[Model]):
@@ -278,6 +294,7 @@ See [TextField documentation](fields.md#textfield) for the full list of availabl
 ```python
 from factorio.lib.enums import UnstableTextType
 
+
 class UserFactory(Factory[User]):
     # Using enum constant
     email = fields.TextField(UnstableTextType.EMAIL)
@@ -289,26 +306,32 @@ class UserFactory(Factory[User]):
 ### Available Members
 
 **Personal Information:**
+
 - `NAME`, `FIRST_NAME`, `LAST_NAME`, `PREFIX`, `SUFFIX`
 - `USER_NAME`, `PASSWORD`
 
 **Contact:**
+
 - `EMAIL`, `SAFE_EMAIL`, `FREE_EMAIL`, `COMPANY_EMAIL`
 - `PHONE_NUMBER`, `MSISDN`
 
 **Address:**
+
 - `ADDRESS`, `STREET_ADDRESS`, `CITY`, `COUNTRY`
 - `POSTCODE`, `STATE`, `BUILDING_NUMBER`
 
 **Internet:**
+
 - `IPV4`, `IPV6`, `URL`, `DOMAIN_NAME`, `HOSTNAME`
 - `MAC_ADDRESS`, `USER_AGENT`
 
 **Business:**
+
 - `COMPANY`, `JOB`, `BS`, `CATCH_PHRASE`
 - `EIN`, `DUNS`
 
 **Finance:**
+
 - `CREDIT_CARD_NUMBER`, `IBAN`, `SWIFT`, `BIC`
 - `CURRENCY_CODE`, `CURRENCY_NAME`, `PRICE`
 
@@ -323,12 +346,14 @@ Prefer direct string usage over `UnstableTextType`:
 class MyFactory(Factory[Model]):
     field = fields.TextField(UnstableTextType.COMPANY)
 
+
 # ✅ Stable - won't break
 class MyFactory(Factory[Model]):
     field = fields.TextField("company")
 ```
 
 The string approach is:
+
 - More readable
 - More flexible
 - Less coupled to factorio internals
@@ -365,6 +390,7 @@ class Environment(StrEnum):
     STAGING = auto()
     PRODUCTION = auto()
 
+
 def get_config(env: Environment):
     configs = {
         "development": {"debug": True, "db": "localhost"},
@@ -372,6 +398,7 @@ def get_config(env: Environment):
         "production": {"debug": False, "db": "prod-db"},
     }
     return configs[str(env)]
+
 
 config = get_config(Environment.DEVELOPMENT)
 assert config["debug"] is True
@@ -386,12 +413,14 @@ class Permission(StrEnum):
     DELETE = auto()
     ADMIN = auto()
 
+
 class User:
     def __init__(self, permissions: set[Permission]):
         self.permissions = permissions
 
     def has_permission(self, perm: Permission) -> bool:
         return perm in self.permissions or "admin" in self.permissions
+
 
 user = User({Permission.READ, Permission.WRITE})
 assert user.has_permission("read") is True
@@ -407,6 +436,7 @@ class TaskStatus(StrEnum):
     REVIEW = auto()
     DONE = auto()
 
+
 class Task:
     def __init__(self, title: str):
         self.title = title
@@ -421,6 +451,7 @@ class Task:
         next_status = transitions.get(self.status)
         if next_status:
             self.status = next_status
+
 
 task = Task("Write docs")
 assert task.status == "todo"

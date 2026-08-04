@@ -28,16 +28,19 @@ from dataclasses import dataclass
 from factorio import fields
 from factorio.factories import Factory
 
+
 @dataclass
 class User:
     name: str
     email: str
     age: int
 
+
 class UserFactory(Factory[User]):
     name = fields.TextField("name")
     email = fields.TextField("email")
     age = fields.IntegerField(min_value=18, max_value=65)
+
 
 user = UserFactory.build()
 # user.name might be "Sarah Johnson"

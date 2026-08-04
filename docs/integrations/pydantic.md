@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field, EmailStr
 from datetime import datetime
 from typing import Optional
 
+
 class User(BaseModel):
     id: Optional[int] = None
     name: str = Field(..., min_length=1, max_length=100)
@@ -18,6 +19,7 @@ class User(BaseModel):
     age: int = Field(..., ge=0, le=150)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     bio: Optional[str] = None
+
 
 class Post(BaseModel):
     id: Optional[int] = None
@@ -34,12 +36,14 @@ class Post(BaseModel):
 from factorio import fields
 from factorio.factories import Factory
 
+
 class UserFactory(Factory[User]):
     name = fields.StringField(min_chars=3, max_chars=50)
     email = fields.TextField("email")
     age = fields.IntegerField(min_value=18, max_value=65)
     bio = fields.TextField("paragraph", nb_sentences=2)
     # Don't set id or created_at - let Pydantic handle defaults
+
 
 class PostFactory(Factory[Post]):
     title = fields.TextField("sentence", nb_words=5)
@@ -88,6 +92,7 @@ def test_invalid_age_rejected():
 ```python
 import json
 
+
 def test_user_serialization():
     user = UserFactory.build()
 
@@ -108,11 +113,13 @@ def test_user_serialization():
 from pydantic import BaseModel
 from typing import List
 
+
 class Address(BaseModel):
     street: str
     city: str
     country: str
     zipcode: str
+
 
 class UserWithAddress(BaseModel):
     name: str
@@ -120,20 +127,22 @@ class UserWithAddress(BaseModel):
     address: Address
     secondary_addresses: List[Address] = []
 
+
 class AddressFactory(Factory[Address]):
     street = fields.TextField("street_address")
     city = fields.TextField("city")
     country = fields.TextField("country")
     zipcode = fields.TextField("postcode")
 
+
 class UserWithAddressFactory(Factory[UserWithAddress]):
     name = fields.TextField("name")
     email = fields.TextField("email")
     address = fields.FactoryField(AddressFactory)
     secondary_addresses = fields.ListField(
-        fields.FactoryField(AddressFactory),
-        length=2
+        fields.FactoryField(AddressFactory), length=2
     )
+
 
 def test_nested_models():
     user = UserWithAddressFactory.build()
@@ -152,11 +161,13 @@ class Profile(BaseModel):
     website: Optional[str] = None
     twitter: Optional[str] = None
 
+
 class ProfileFactory(Factory[Profile]):
     username = fields.TextField("user_name")
     # Sometimes include optional fields
     website = fields.TextField("url")  # Will always generate
     twitter = fields.ConstantField(None)  # Always None
+
 
 def test_optional_fields():
     profile = ProfileFactory.build()
@@ -173,10 +184,12 @@ class Settings(BaseModel):
     notifications: bool = True
     language: str = "en"
 
+
 class SettingsFactory(Factory[Settings]):
     # Override some defaults, keep others
     theme = fields.ChoiceField(["light", "dark", "system"])
     # Don't define notifications or language - use model defaults
+
 
 def test_partial_override():
     settings = SettingsFactory.build()
@@ -195,11 +208,14 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+
 @app.post("/users")
 def create_user(user: User):
     return {"message": f"User {user.name} created", "id": 123}
 
+
 client = TestClient(app)
+
 
 def test_create_user_endpoint():
     user = UserFactory.build()
@@ -234,6 +250,7 @@ from pydantic import BaseModel, Field, EmailStr, validator
 from factorio import fields
 from factorio.factories import Factory
 
+
 # Model with validation
 class Product(BaseModel):
     name: str = Field(..., min_length=1)
@@ -242,11 +259,12 @@ class Product(BaseModel):
     in_stock: bool = True
     tags: list[str] = []
 
-    @validator('tags')
+    @validator("tags")
     def validate_tags(cls, v):
         if len(v) > 10:
-            raise ValueError('Too many tags')
+            raise ValueError("Too many tags")
         return v
+
 
 # Factory
 class ProductFactory(Factory[Product]):
@@ -256,6 +274,7 @@ class ProductFactory(Factory[Product]):
     in_stock = fields.BooleanField(truth_probability=80)
     tags = fields.ListField(fields.TextField("word"), length=3, variation=2)
 
+
 # Tests
 def test_valid_product():
     product = ProductFactory.build()
@@ -264,6 +283,7 @@ def test_valid_product():
     assert product.price > 0
     assert product.category in ["electronics", "books", "clothing"]
     assert len(product.tags) <= 10  # Validator constraint
+
 
 def test_product_json():
     product = ProductFactory.build()
@@ -276,6 +296,7 @@ def test_product_json():
     # Exclude None values
     compact = product.model_dump(exclude_none=True)
     assert compact == json_data  # No None values in this case
+
 
 def test_bulk_products():
     products = [ProductFactory.build() for _ in range(5)]
@@ -301,6 +322,7 @@ class APIUserFactory(Factory[User]):
     age = fields.IntegerField(min_value=18, max_value=80)  # Realistic ages
     bio = fields.TextField("paragraph", nb_sentences=3)  # Realistic bios
 
+
 def test_api_with_realistic_data(client: TestClient):
     user = APIUserFactory.build()
 
@@ -319,9 +341,11 @@ def test_minimum_age():
     user = UserFactory.build(age=0)  # Edge case
     assert user.age == 0
 
+
 def test_maximum_age():
     user = UserFactory.build(age=150)  # Edge case
     assert user.age == 150
+
 
 def test_empty_bio():
     user = UserFactory.build(bio="")  # Empty string
@@ -334,6 +358,7 @@ def test_empty_bio():
 # factorio's type hints work well with Pydantic
 def process_user(user: User) -> str:
     return f"{user.name} <{user.email}>"
+
 
 def test_type_safety():
     user = UserFactory.build()
@@ -350,7 +375,10 @@ def test_type_safety():
 ```python
 # ❌ Wrong - factory generates invalid data
 class BadUserFactory(Factory[User]):
-    age = fields.IntegerField(min_value=-100, max_value=200)  # Outside Pydantic constraints!
+    age = fields.IntegerField(
+        min_value=-100, max_value=200
+    )  # Outside Pydantic constraints!
+
 
 # ✅ Correct - respect model constraints
 class GoodUserFactory(Factory[User]):
@@ -365,6 +393,7 @@ class IncompleteUserFactory(Factory[User]):
     email = fields.TextField("email")
     # Forgot name!
 
+
 # ✅ Include all required fields
 class CompleteUserFactory(Factory[User]):
     name = fields.TextField("name")
@@ -378,10 +407,12 @@ class Config(BaseModel):
     timeout: int = 30
     retries: int = 3
 
+
 # ❌ Overriding when you want defaults
 class ConfigFactory(Factory[Config]):
     timeout = fields.IntegerField(min_value=1, max_value=100)
     retries = fields.IntegerField(min_value=1, max_value=10)
+
 
 # ✅ Let Pydantic handle defaults when appropriate
 class SmartConfigFactory(Factory[Config]):

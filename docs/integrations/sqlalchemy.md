@@ -7,14 +7,23 @@ factorio works seamlessly with SQLAlchemy models. Since factorio doesn't interac
 ### Define Your Models
 
 ```python
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, create_engine
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Float,
+    DateTime,
+    ForeignKey,
+    create_engine,
+)
 from sqlalchemy.orm import DeclarativeBase, relationship
 from datetime import datetime
 
 Base = DeclarativeBase()
 
+
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
@@ -25,13 +34,14 @@ class User(Base):
     # Relationship
     posts = relationship("Post", back_populates="author")
 
+
 class Post(Base):
-    __tablename__ = 'posts'
+    __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True)
     title = Column(String(200), nullable=False)
     content = Column(String)
-    author_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     # Relationship
     author = relationship("User", back_populates="posts")
@@ -43,11 +53,13 @@ class Post(Base):
 from factorio import fields
 from factorio.factories import Factory
 
+
 class UserFactory(Factory[User]):
     name = fields.TextField("name")
     email = fields.TextField("email")
     age = fields.IntegerField(min_value=18, max_value=65)
     # Don't set created_at - let SQLAlchemy handle defaults
+
 
 class PostFactory(Factory[Post]):
     title = fields.TextField("sentence", nb_words=6)
@@ -74,6 +86,7 @@ def test_user_creation():
 
 ```python
 from sqlalchemy.orm import Session
+
 
 def test_save_user_to_database(db_session: Session):
     # Build object
@@ -150,19 +163,16 @@ def test_create_multiple_users(db_session: Session):
 ```python
 def test_adult_users(db_session: Session):
     # Override age range for this specific test
-    adult_user = UserFactory.build(
-        age=fields.IntegerField(min_value=21, max_value=65)
-    )
+    adult_user = UserFactory.build(age=fields.IntegerField(min_value=21, max_value=65))
     db_session.add(adult_user)
     db_session.commit()
 
     assert adult_user.age >= 21
 
+
 def test_teen_users(db_session: Session):
     # Different age range
-    teen_user = UserFactory.build(
-        age=fields.IntegerField(min_value=18, max_value=20)
-    )
+    teen_user = UserFactory.build(age=fields.IntegerField(min_value=18, max_value=20))
     db_session.add(teen_user)
     db_session.commit()
 
@@ -177,6 +187,7 @@ def test_teen_users(db_session: Session):
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 
 @pytest.fixture
 def db_session():
@@ -217,6 +228,7 @@ class UserFactory(Factory[User]):
         session.commit()
         return user
 
+
 # Usage in tests
 def test_quick_user_creation(db_session: Session):
     user = UserFactory.create_and_save(db_session, age=25)
@@ -233,6 +245,7 @@ def test_quick_user_creation(db_session: Session):
 class UserFactory(Factory[User]):
     id = fields.IntegerField()  # Don't do this!
     name = fields.TextField("name")
+
 
 # ✅ Correct - only set non-PK fields
 class UserFactory(Factory[User]):
@@ -281,18 +294,21 @@ from factorio.factories import Factory
 # Models
 Base = DeclarativeBase()
 
+
 class Product(Base):
-    __tablename__ = 'products'
+    __tablename__ = "products"
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
     price = Column(Integer)  # Price in cents
     category = Column(String(50))
+
 
 # Factory
 class ProductFactory(Factory[Product]):
     name = fields.TextField("word").capitalize()
     price = fields.IntegerField(min_value=100, max_value=99999)
     category = fields.ChoiceField(["electronics", "books", "clothing"])
+
 
 # Test
 @pytest.fixture
@@ -303,6 +319,7 @@ def db_session():
     session = Session()
     yield session
     session.close()
+
 
 def test_product_workflow(db_session):
     # Build product

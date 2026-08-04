@@ -19,20 +19,25 @@ Extracts the model type from the factory's generic type annotation.
 **Returns:** The concrete model type that this factory creates.
 
 **Raises:**
+
 - `TypeError` - If no concrete model is found
 - `TypeError` - If multiple concrete models are found (ambiguous inheritance)
 
 **Example:**
+
 ```python
 from factorio.factories import Factory
 from dataclasses import dataclass
+
 
 @dataclass
 class User:
     name: str
 
+
 class UserFactory(Factory[User]):
     name = fields.TextField("name")
+
 
 model_type = UserFactory.get_model()
 assert model_type is User
@@ -50,21 +55,25 @@ The method inspects the Method Resolution Order (MRO) of the factory class and e
 Creates an instance of the model with generated field values.
 
 **Parameters:**
+
 - `**kwargs`: Optional field overrides. Can be:
-  - Direct values (e.g., `name="John"`)
-  - Field instances (e.g., `age=fields.IntegerField(min_value=20, max_value=30)`)
+    - Direct values (e.g., `name="John"`)
+    - Field instances (e.g., `age=fields.IntegerField(min_value=20, max_value=30)`)
 
 **Returns:** An instance of type `T` (the model)
 
 **Example:**
+
 ```python
 from factorio import fields
 from factorio.factories import Factory
+
 
 class UserFactory(Factory[User]):
     name = fields.TextField("name")
     age = fields.IntegerField(min_value=18, max_value=65)
     email = fields.TextField("email")
+
 
 # Basic usage
 user = UserFactory.build()
@@ -78,13 +87,12 @@ assert user.name == "Jane"
 assert user.age == 30
 
 # Override with field instances
-user = UserFactory.build(
-    age=fields.IntegerField(min_value=50, max_value=60)
-)
+user = UserFactory.build(age=fields.IntegerField(min_value=50, max_value=60))
 assert 50 <= user.age <= 60
 ```
 
 **How it works:**
+
 1. Calls `get_model()` to determine the model type
 2. Iterates through class attributes to find `AbstractField` instances
 3. Calls each field to generate a value
@@ -93,6 +101,7 @@ assert 50 <= user.age <= 60
 6. Returns the model instance
 
 **Important:**
+
 - Fields are evaluated when `.build()` is called, not when the factory is defined
 - Override values take precedence over factory-defined fields
 - If you pass a field instance as an override, it will be evaluated
@@ -108,16 +117,19 @@ from dataclasses import dataclass
 from factorio import fields
 from factorio.factories import Factory
 
+
 @dataclass
 class Product:
     name: str
     price: float
     in_stock: bool
 
+
 class ProductFactory(Factory[Product]):
     name = fields.TextField("word").capitalize()
     price = fields.FloatField(min_value=0.01, max_value=999.99)
     in_stock = fields.BooleanField(truth_probability=80)
+
 
 product = ProductFactory.build()
 ```
@@ -130,18 +142,22 @@ class Address:
     street: str
     city: str
 
+
 @dataclass
 class User:
     name: str
     address: Address
 
+
 class AddressFactory(Factory[Address]):
     street = fields.TextField("street_address")
     city = fields.TextField("city")
 
+
 class UserFactory(Factory[User]):
     name = fields.TextField("name")
     address = fields.FactoryField(AddressFactory)
+
 
 user = UserFactory.build()
 assert isinstance(user.address, Address)
@@ -154,13 +170,16 @@ class BaseUserFactory(Factory[User]):
     name = fields.TextField("name")
     email = fields.TextField("email")
 
+
 class AdminUserFactory(BaseUserFactory):
     role = fields.ConstantField("admin")
     is_admin = fields.ConstantField(True)
 
+
 class RegularUserFactory(BaseUserFactory):
     role = fields.ChoiceField(["user", "member"])
     is_admin = fields.ConstantField(False)
+
 
 admin = AdminUserFactory.build()
 assert admin.role == "admin"
@@ -182,9 +201,11 @@ class Config:
     retries: int = 3
     debug: bool = False
 
+
 class ConfigFactory(Factory[Config]):
     # Only override timeout, use defaults for others
     timeout = fields.IntegerField(min_value=1, max_value=120)
+
 
 config = ConfigFactory.build()
 assert config.retries == 3  # Default
@@ -214,17 +235,20 @@ class TimestampedFactory(Factory[T]):
     created_at = fields.DateTimeField()
     updated_at = fields.DateTimeField()
 
+
 class AuditableFactory(Factory[T]):
     created_by = fields.TextField("user_name")
     updated_by = fields.TextField("user_name")
+
 
 class ArticleFactory(TimestampedFactory, AuditableFactory):
     title = fields.TextField("sentence")
     content = fields.TextField("paragraphs", nb=3)
 
+
 article = ArticleFactory.build()
-assert hasattr(article, 'created_at')
-assert hasattr(article, 'created_by')
+assert hasattr(article, "created_at")
+assert hasattr(article, "created_by")
 ```
 
 ---
@@ -237,6 +261,7 @@ assert hasattr(article, 'created_by')
 class BadFactory(Factory):  # Missing type parameter
     name = fields.TextField("name")
 
+
 try:
     BadFactory.get_model()
 except TypeError as e:
@@ -244,6 +269,7 @@ except TypeError as e:
 ```
 
 **Fix:** Always specify the type parameter:
+
 ```python
 class GoodFactory(Factory[User]):
     name = fields.TextField("name")
@@ -255,12 +281,15 @@ class GoodFactory(Factory[User]):
 class UserFactory1(Factory[User]):
     pass
 
+
 class UserFactory2(Factory[User]):
     pass
+
 
 # Ambiguous inheritance
 class ConfusedFactory(UserFactory1, UserFactory2):
     pass
+
 
 try:
     ConfusedFactory.get_model()
@@ -305,6 +334,7 @@ def create_factory_for_model(model_class: type[T]) -> type[Factory[T]]:
 
     return DynamicFactory
 
+
 UserFactory = create_factory_for_model(User)
 user = UserFactory.build()
 ```
@@ -314,14 +344,17 @@ user = UserFactory.build()
 ```python
 FACTORY_REGISTRY: dict[type, type[Factory]] = {}
 
+
 def register_factory(model_class: type[T], factory_class: type[Factory[T]]):
     FACTORY_REGISTRY[model_class] = factory_class
+
 
 def build_instance(model_class: type[T], **kwargs) -> T:
     factory = FACTORY_REGISTRY.get(model_class)
     if not factory:
         raise ValueError(f"No factory registered for {model_class}")
     return factory.build(**kwargs)
+
 
 # Register factories
 register_factory(User, UserFactory)
@@ -353,6 +386,7 @@ class ValidatedUserFactory(Factory[User]):
             instance.is_minor = False
 
         return instance
+
 
 user = ValidatedUserFactory.build(age=15)
 assert user.is_minor is True

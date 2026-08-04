@@ -14,19 +14,22 @@ from factorio.factories import Factory
 
 _counter = 0
 
+
 def next_id():
     global _counter
     _counter += 1
     return _counter
+
 
 class UserFactory(Factory[User]):
     user_id = fields.ConstantField(None)  # Will be overridden
 
     @classmethod
     def build(cls, **kwargs):
-        if 'user_id' not in kwargs:
-            kwargs['user_id'] = next_id()
+        if "user_id" not in kwargs:
+            kwargs["user_id"] = next_id()
         return super().build(**kwargs)
+
 
 # Usage
 user1 = UserFactory.build()  # user_id = 1
@@ -40,8 +43,10 @@ user3 = UserFactory.build()  # user_id = 3
 import uuid
 from factorio import fields
 
+
 class EntityFactory(Factory[Entity]):
     id = fields.ConstantField(str(uuid.uuid4()))
+
 
 # Each entity gets a unique UUID
 entity1 = EntityFactory.build()
@@ -54,19 +59,22 @@ assert entity1.id != entity2.id
 ```python
 _email_counter = 0
 
+
 def unique_email():
     global _email_counter
     _email_counter += 1
     return f"user{_email_counter}@example.com"
+
 
 class UserFactory(Factory[User]):
     email = fields.ConstantField(None)
 
     @classmethod
     def build(cls, **kwargs):
-        if 'email' not in kwargs:
-            kwargs['email'] = unique_email()
+        if "email" not in kwargs:
+            kwargs["email"] = unique_email()
         return super().build(**kwargs)
+
 
 # All emails are unique
 users = [UserFactory.build() for _ in range(100)]
@@ -84,6 +92,7 @@ Generate values conditionally based on other field values:
 from factorio import fields
 from factorio.factories import Factory
 
+
 class UserFactory(Factory[User]):
     age = fields.IntegerField(min_value=0, max_value=100)
     is_adult = fields.ConstantField(None)
@@ -94,6 +103,7 @@ class UserFactory(Factory[User]):
         # Set is_adult based on age
         instance.is_adult = instance.age >= 18
         return instance
+
 
 user = UserFactory.build(age=25)
 assert user.is_adult is True
@@ -132,6 +142,7 @@ Use lambda or callable for lazy evaluation:
 
 ```python
 from datetime import datetime
+
 
 class EventFactory(Factory[Event]):
     created_at = fields.DateTimeField()
@@ -186,6 +197,7 @@ class CustomerFactory(Factory[Customer]):
         instance.full_name = f"{instance.first_name} {instance.last_name}"
         return instance
 
+
 customer = CustomerFactory.build()
 assert customer.full_name  # "John Smith"
 assert "@" in customer.email  # "john.smith@example.com"
@@ -197,15 +209,15 @@ assert customer.phone  # "+1-555-123-4567"
 ```python
 from decimal import Decimal
 
+
 class TransactionFactory(Factory[Transaction]):
     amount = fields.DecimalField(
-        min_value=Decimal("0.01"),
-        max_value=Decimal("9999.99"),
-        accuracy=2
+        min_value=Decimal("0.01"), max_value=Decimal("9999.99"), accuracy=2
     )
     currency = fields.ChoiceField(["USD", "EUR", "GBP", "JPY"])
     description = fields.TextField("sentence", nb_words=8)
     timestamp = fields.DateTimeField()
+
 
 transaction = TransactionFactory.build()
 assert isinstance(transaction.amount, Decimal)
@@ -221,6 +233,7 @@ class WebsiteFactory(Factory[Website]):
     ip_address = fields.TextField("ipv4")
     user_agent = fields.TextField("user_agent")
     email = fields.TextField("company_email")
+
 
 website = WebsiteFactory.build()
 assert website.url.startswith("http")
@@ -254,11 +267,13 @@ class SlowOrderFactory(Factory[Order]):
     shipping_address = fields.FactoryField(AddressFactory)
     billing_address = fields.FactoryField(AddressFactory)
 
+
 # ✅ Faster - only generate what you need
 class FastOrderFactory(Factory[Order]):
     customer_id = fields.IntegerField(min_value=1, max_value=1000)
     item_count = fields.IntegerField(min_value=1, max_value=10)
     total_amount = fields.DecimalField(min_value=1, max_value=999)
+
 
 def test_performance():
     import time
@@ -275,6 +290,7 @@ def test_performance():
 ```python
 # Create factory once, reuse many times
 user_factory = UserFactory
+
 
 def test_multiple_scenarios():
     # Reuse same factory
@@ -297,7 +313,7 @@ def debug_factory():
     print(f"Age: {user.age}")
 
     # Or convert to dict if supported
-    if hasattr(user, '__dict__'):
+    if hasattr(user, "__dict__"):
         print(user.__dict__)
 ```
 
@@ -334,6 +350,7 @@ def test_types():
 ```python
 from datetime import datetime
 
+
 class TimestampedFactory(Factory[T]):
     created_at = fields.DateTimeField()
     updated_at = fields.DateTimeField()
@@ -345,6 +362,7 @@ class TimestampedFactory(Factory[T]):
         if instance.updated_at < instance.created_at:
             instance.updated_at = instance.created_at
         return instance
+
 
 class ArticleFactory(TimestampedFactory):
     title = fields.TextField("sentence")
@@ -364,6 +382,7 @@ class SoftDeletableFactory(Factory[T]):
         if instance.is_deleted and instance.deleted_at is None:
             instance.deleted_at = datetime.utcnow()
         return instance
+
 
 class PostFactory(SoftDeletableFactory):
     title = fields.TextField("sentence")
@@ -388,14 +407,11 @@ class VersionedFactory(Factory[T]):
 
 ```python
 class OrderFactory(Factory[Order]):
-    status = fields.ChoiceField([
-        "pending",
-        "processing",
-        "shipped",
-        "delivered",
-        "cancelled"
-    ])
+    status = fields.ChoiceField(
+        ["pending", "processing", "shipped", "delivered", "cancelled"]
+    )
     priority = fields.ChoiceField(["low", "medium", "high", "critical"])
+
 
 order = OrderFactory.build()
 assert order.status in ["pending", "processing", "shipped", "delivered", "cancelled"]
@@ -408,27 +424,30 @@ assert order.status in ["pending", "processing", "shipped", "delivered", "cancel
 ```python
 import pytest
 
+
 @pytest.fixture
 def user():
     return UserFactory.build()
 
+
 @pytest.fixture
 def admin_user():
-    return UserFactory.build(
-        is_admin=True,
-        role="administrator"
-    )
+    return UserFactory.build(is_admin=True, role="administrator")
+
 
 @pytest.fixture
 def multiple_users():
     return [UserFactory.build() for _ in range(5)]
 
+
 def test_with_fixture(user):
     assert user.name
     assert user.email
 
+
 def test_admin(admin_user):
     assert admin_user.is_admin is True
+
 
 def test_bulk(multiple_users):
     assert len(multiple_users) == 5
@@ -439,11 +458,15 @@ def test_bulk(multiple_users):
 ```python
 import pytest
 
-@pytest.mark.parametrize("age_range", [
-    (18, 25),
-    (26, 40),
-    (41, 65),
-])
+
+@pytest.mark.parametrize(
+    "age_range",
+    [
+        (18, 25),
+        (26, 40),
+        (41, 65),
+    ],
+)
 def test_age_groups(age_range):
     min_age, max_age = age_range
     user = UserFactory.build(
@@ -459,6 +482,7 @@ def test_age_groups(age_range):
 @pytest.fixture
 def user_factory():
     return UserFactory
+
 
 def test_custom_user(user_factory):
     user = user_factory.build(name="Custom Name")
@@ -494,15 +518,18 @@ class MyFactory(Factory[MyModel]):
     field2 = fields.IntegerField(min_value=1, max_value=100)
     field3 = fields.BooleanField(truth_probability=80)
 
+
 # Build instance
 instance = MyFactory.build()
 
 # Override fields
 instance = MyFactory.build(field1="custom", field2=42)
 
+
 # Nested factories
 class ParentFactory(Factory[Parent]):
     child = fields.FactoryField(ChildFactory)
+
 
 # Collections
 items = fields.ListField(fields.StringField(), length=5, variation=2)

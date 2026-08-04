@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
 
+
 @dataclass
 class User:
     name: str
@@ -19,12 +20,14 @@ class User:
     created_at: datetime = field(default_factory=datetime.utcnow)
     bio: Optional[str] = None
 
+
 @dataclass
 class Address:
     street: str
     city: str
     country: str
     zipcode: str
+
 
 @dataclass
 class UserWithAddress:
@@ -39,17 +42,20 @@ class UserWithAddress:
 from factorio import fields
 from factorio.factories import Factory
 
+
 class UserFactory(Factory[User]):
     name = fields.TextField("name")
     email = fields.TextField("email")
     age = fields.IntegerField(min_value=18, max_value=65)
     bio = fields.TextField("paragraph", nb_sentences=2)
 
+
 class AddressFactory(Factory[Address]):
     street = fields.TextField("street_address")
     city = fields.TextField("city")
     country = fields.TextField("country")
     zipcode = fields.TextField("postcode")
+
 
 class UserWithAddressFactory(Factory[UserWithAddress]):
     name = fields.TextField("name")
@@ -88,11 +94,7 @@ def test_user_with_address():
 
 ```python
 def test_custom_user():
-    user = UserFactory.build(
-        name="John Doe",
-        age=30,
-        email="john@example.com"
-    )
+    user = UserFactory.build(name="John Doe", age=30, email="john@example.com")
 
     assert user.name == "John Doe"
     assert user.age == 30
@@ -114,10 +116,12 @@ class Product:
     quantity: int = 0
     tags: list[str] = field(default_factory=list)
 
+
 class ProductFactory(Factory[Product]):
     name = fields.TextField("word").capitalize()
     price = fields.FloatField(min_value=0.01, max_value=999.99)
     # Don't define in_stock, quantity, or tags - use defaults
+
 
 def test_defaults_preserved():
     product = ProductFactory.build()
@@ -147,8 +151,10 @@ class ShoppingCart:
     items: list[str] = field(default_factory=list)  # ✅ Correct
     # items: list[str] = []  # ❌ Wrong - shared mutable default!
 
+
 class ShoppingCartFactory(Factory[ShoppingCart]):
     items = fields.ListField(fields.TextField("word"), length=3)
+
 
 def test_separate_instances():
     cart1 = ShoppingCartFactory.build()
@@ -173,17 +179,20 @@ class Circle:
     def __post_init__(self):
         if self.radius < 0:
             raise ValueError("Radius cannot be negative")
-        self.area = 3.14159 * self.radius ** 2
+        self.area = 3.14159 * self.radius**2
+
 
 class CircleFactory(Factory[Circle]):
     radius = fields.FloatField(min_value=0.1, max_value=100.0)
+
 
 def test_circle_validation():
     circle = CircleFactory.build()
 
     assert circle.radius > 0
-    assert hasattr(circle, 'area')
+    assert hasattr(circle, "area")
     assert circle.area > 0
+
 
 def test_invalid_radius_rejected():
     try:
@@ -204,29 +213,35 @@ class Vehicle:
     model: str
     year: int
 
+
 @dataclass
 class Car(Vehicle):
     num_doors: int
     fuel_type: str
+
 
 @dataclass
 class ElectricCar(Car):
     battery_capacity: float  # kWh
     charging_time: float  # hours
 
+
 class VehicleFactory(Factory[Vehicle]):
     make = fields.ChoiceField(["Toyota", "Honda", "Ford"])
     model = fields.TextField("word").capitalize()
     year = fields.IntegerField(min_value=2000, max_value=2024)
 
+
 class CarFactory(VehicleFactory):
     num_doors = fields.ChoiceField([2, 4])
     fuel_type = fields.ChoiceField(["gasoline", "diesel", "hybrid"])
+
 
 class ElectricCarFactory(CarFactory):
     battery_capacity = fields.FloatField(min_value=40.0, max_value=100.0)
     charging_time = fields.FloatField(min_value=0.5, max_value=8.0)
     fuel_type = fields.ConstantField("electric")  # Override parent
+
 
 def test_inheritance():
     car = CarFactory.build()
@@ -249,9 +264,11 @@ class Point:
     x: float
     y: float
 
+
 class PointFactory(Factory[Point]):
     x = fields.FloatField(min_value=-100, max_value=100)
     y = fields.FloatField(min_value=-100, max_value=100)
+
 
 def test_point_equality():
     p1 = PointFactory.build(x=10.0, y=20.0)
@@ -270,9 +287,11 @@ class Student:
     grade: int
     name: str
 
+
 class StudentFactory(Factory[Student]):
     grade = fields.IntegerField(min_value=1, max_value=12)
     name = fields.TextField("name")
+
 
 def test_student_sorting():
     students = [StudentFactory.build() for _ in range(10)]
@@ -287,6 +306,7 @@ def test_student_sorting():
 
 ```python
 from dataclasses import asdict, astuple
+
 
 def test_conversion():
     user = UserFactory.build()
@@ -311,6 +331,7 @@ from typing import Optional
 from factorio import fields
 from factorio.factories import Factory
 
+
 # Domain models
 @dataclass
 class Book:
@@ -322,6 +343,7 @@ class Book:
     genre: str
     description: Optional[str] = None
 
+
 @dataclass
 class LibraryMember:
     name: str
@@ -329,6 +351,7 @@ class LibraryMember:
     member_since: date
     borrowed_books: list[str] = field(default_factory=list)
     max_books: int = 5
+
 
 @dataclass
 class Loan:
@@ -338,34 +361,31 @@ class Loan:
     due_date: date
     returned: bool = False
 
+
 # Factories
 class BookFactory(Factory[Book]):
     title = fields.TextField("sentence", nb_words=4)
     author = fields.TextField("name")
     isbn = fields.TextField("isbn13")
     published_date = fields.DateField(
-        min_date=date(1900, 1, 1),
-        max_date=date(2024, 12, 31)
+        min_date=date(1900, 1, 1), max_date=date(2024, 12, 31)
     )
     pages = fields.IntegerField(min_value=50, max_value=1000)
-    genre = fields.ChoiceField([
-        "fiction", "non-fiction", "mystery", "sci-fi", "romance"
-    ])
+    genre = fields.ChoiceField(
+        ["fiction", "non-fiction", "mystery", "sci-fi", "romance"]
+    )
     description = fields.TextField("paragraph", nb_sentences=2)
+
 
 class LibraryMemberFactory(Factory[LibraryMember]):
     name = fields.TextField("name")
     email = fields.TextField("safe_email")
     member_since = fields.DateField(
-        min_date=date(2020, 1, 1),
-        max_date=date(2024, 12, 31)
+        min_date=date(2020, 1, 1), max_date=date(2024, 12, 31)
     )
-    borrowed_books = fields.ListField(
-        fields.TextField("isbn13"),
-        length=2,
-        variation=1
-    )
+    borrowed_books = fields.ListField(fields.TextField("isbn13"), length=2, variation=1)
     max_books = fields.IntegerField(min_value=3, max_value=10)
+
 
 class LoanFactory(Factory[Loan]):
     book_isbn = fields.TextField("isbn13")
@@ -373,6 +393,7 @@ class LoanFactory(Factory[Loan]):
     loan_date = fields.DateField()
     due_date = fields.DateField()  # Should be after loan_date
     returned = fields.BooleanField(truth_probability=60)
+
 
 # Tests
 def test_book_creation():
@@ -384,6 +405,7 @@ def test_book_creation():
     assert 50 <= book.pages <= 1000
     assert book.genre in ["fiction", "non-fiction", "mystery", "sci-fi", "romance"]
 
+
 def test_member_with_books():
     member = LibraryMemberFactory.build()
 
@@ -392,6 +414,7 @@ def test_member_with_books():
     assert 1 <= len(member.borrowed_books) <= 3
     assert all(isinstance(isbn, str) for isbn in member.borrowed_books)
 
+
 def test_loan_workflow():
     loan = LoanFactory.build()
 
@@ -399,6 +422,7 @@ def test_loan_workflow():
     assert "@" in loan.member_email
     assert loan.due_date >= loan.loan_date  # Due date after loan date
     assert isinstance(loan.returned, bool)
+
 
 def test_bulk_operations():
     books = [BookFactory.build() for _ in range(20)]
@@ -426,6 +450,7 @@ class User:
     age: int
     email: str
 
+
 # ❌ Avoid - missing type hints
 @dataclass
 class BadUser:
@@ -444,8 +469,10 @@ class Temperature:
         if self.celsius < -273.15:
             raise ValueError("Below absolute zero!")
 
+
 class TemperatureFactory(Factory[Temperature]):
     celsius = fields.FloatField(min_value=-100, max_value=100)
+
 
 # Factory respects validation
 temp = TemperatureFactory.build()
@@ -460,18 +487,11 @@ class UserFactory(Factory[User]):
     name = fields.TextField("name")
     email = fields.TextField("email")
 
+
 # ❌ Overly complex
 class ComplicatedUserFactory(Factory[User]):
-    name = fields.StringField(
-        min_chars=5,
-        max_chars=20,
-        prefix="USR-"
-    )
-    email = fields.StringField(
-        min_chars=10,
-        max_chars=30,
-        suffix="@test.local"
-    )
+    name = fields.StringField(min_chars=5, max_chars=20, prefix="USR-")
+    email = fields.StringField(min_chars=10, max_chars=30, suffix="@test.local")
     # Just use TextField for realistic data!
 ```
 
@@ -483,12 +503,7 @@ class ProductFactory(Factory[Product]):
     price_cents = fields.IntegerField(min_value=100, max_value=99999)
 
     # Categories match our database enum
-    category = fields.ChoiceField([
-        "electronics",
-        "books",
-        "clothing",
-        "home_garden"
-    ])
+    category = fields.ChoiceField(["electronics", "books", "clothing", "home_garden"])
 ```
 
 ## Common Pitfalls
@@ -501,9 +516,11 @@ class ImmutablePoint:
     x: float
     y: float
 
+
 class PointFactory(Factory[ImmutablePoint]):
     x = fields.FloatField()
     y = fields.FloatField()
+
 
 def test_frozen():
     point = PointFactory.build()
@@ -522,12 +539,14 @@ def test_frozen():
 @dataclass
 class Person:
     name: str  # Required
-    age: int   # Required
+    age: int  # Required
+
 
 # ❌ Missing required field in factory
 class BadPersonFactory(Factory[Person]):
     name = fields.TextField("name")
     # Forgot age!
+
 
 # ✅ Include all required fields
 class GoodPersonFactory(Factory[Person]):
@@ -542,8 +561,10 @@ class GoodPersonFactory(Factory[Person]):
 class Team:
     members: list[str] = field(default_factory=list)  # ✅ Correct
 
+
 # ❌ Wrong - don't do this in dataclasses
 # members: list[str] = []
+
 
 def test_no_shared_state():
     team1 = TeamFactory.build()

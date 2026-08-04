@@ -43,21 +43,23 @@ factorio~=0.7
 
 ## Python Version Requirement
 
-⚠️ **Important**: `factorio` requires **Python 3.10 or higher**.
+⚠️ **Important**: `factorio` requires **Python 3.11 or higher**.
 
 If you're not using uv, please ensure that you have a compatible Python version installed on your system.
 
 Check your Python version:
+
 ```console
 $ python --version
-Python 3.10.0
+Python 3.11.x
 ```
 
 ## Dependencies
 
 factorio depends on:
+
 - **[faker](https://github.com/joke2k/faker)** >= 30.8 - For realistic data generation
-- **[pyutilkit](https://pypi.org/project/pyutilkit/)** ~= 0.11 - Utility functions
+- **[pyutilkit](https://pypi.org/project/pyutilkit/)** ~= 0.13 - Utility functions
 - **tzdata** (Windows only) - Timezone data
 
 These dependencies are automatically installed when you install factorio.
@@ -74,10 +76,10 @@ python -c "from factorio.factories import Factory; print('factorio installed suc
 
 ### Import Errors
 
-If you get import errors, make sure you're using Python 3.10+:
+If you get import errors, make sure you're using Python 3.11+:
 
 ```console
-$ python3.10 -m pip install factorio
+$ python3.11 -m pip install factorio
 ```
 
 ### Version Conflicts

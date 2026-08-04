@@ -1,37 +1,9 @@
 from __future__ import annotations
 
 import warnings
-from enum import Enum, auto, unique
-from typing import cast
+from enum import StrEnum, auto, unique
 
 from factorio.lib.exceptions import RemovedIn08Warning
-
-
-class StrEnum(str, Enum):  # upgrade: py3.10: Import from enum
-    @staticmethod
-    def _generate_next_value_(
-        name: str,
-        start: int,  # noqa: ARG004
-        count: int,  # noqa: ARG004
-        last_values: list[object],  # noqa: ARG004
-    ) -> str:
-        return name.lower()
-
-    def __str__(self) -> str:
-        return cast("str", self.value)
-
-    def __eq__(self, value: object) -> bool:
-        if isinstance(value, str):
-            return str(self.value) == value
-        return NotImplemented
-
-    def __hash__(self) -> int:
-        return hash(str(self.value))
-
-    def __ne__(self, value: object) -> bool:
-        if isinstance(value, str):
-            return not self.__eq__(value)
-        return NotImplemented
 
 
 @unique
