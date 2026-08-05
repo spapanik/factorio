@@ -34,7 +34,8 @@ class Factory(Generic[T]):
         model = cls.get_model()
         fields = {
             key: value()
-            for key, value in cls.__dict__.items()
+            for base in reversed(getmro(cls))
+            for key, value in base.__dict__.items()
             if isinstance(value, AbstractField)
         }
         for key, value in kwargs.items():
