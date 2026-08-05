@@ -187,8 +187,8 @@ class TimedeltaField(AbstractField[timedelta]):
         self.max_timedelta = max_timedelta
 
     def __call__(self) -> timedelta:
-        timedelta = _fake.time_delta(self.max_timedelta - self.min_timedelta)
-        return self.min_timedelta + timedelta
+        td = _fake.time_delta(self.max_timedelta - self.min_timedelta)
+        return self.min_timedelta + td
 
 
 class TimezoneField(AbstractField[ZoneInfo]):
