@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import string
+import warnings
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 from secrets import choice
@@ -279,7 +280,24 @@ class SetField(AbstractField[set[T]]):
 
     def __call__(self) -> set[T]:
         length = _fake.pyint(min_value=self.min_length, max_value=self.max_length)
-        return {self.field() for _ in range(length)}
+        output: set[T] = set()
+        max_attempts = 5 * length
+        attempts = 0
+
+        while len(output) < length and attempts < max_attempts:
+            attempts += 1
+            output.add(self.field())
+
+        if len(output) < length:
+            warnings.warn(
+                f"SetField generated only {len(output)} unique items after "
+                f"{attempts} attempts; {length} were requested. The nested field "
+                "may not produce enough distinct values.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+
+        return output
 
 
 class DictField(AbstractField[dict[K, T]]):
@@ -297,7 +315,24 @@ class DictField(AbstractField[dict[K, T]]):
 
     def __call__(self) -> dict[K, T]:
         length = _fake.pyint(min_value=self.min_length, max_value=self.max_length)
-        return {self.key_field(): self.value_field() for _ in range(length)}
+        output: dict[K, T] = {}
+        max_attempts = 5 * length
+        attempts = 0
+
+        while len(output) < length and attempts < max_attempts:
+            attempts += 1
+            output[self.key_field()] = self.value_field()
+
+        if len(output) < length:
+            warnings.warn(
+                f"DictField generated only {len(output)} unique keys after "
+                f"{attempts} attempts; {length} were requested. The key field may "
+                "not produce enough distinct values.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+
+        return output
 
 
 class FactoryField(AbstractField[T]):

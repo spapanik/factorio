@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta
 from decimal import Decimal
+from itertools import cycle
 from string import ascii_lowercase, ascii_uppercase, digits
 from zoneinfo import ZoneInfo
 
@@ -10,6 +11,14 @@ import pytest
 
 from factorio import fields
 from factorio.factories import Factory
+
+
+class CyclingIntegerField(fields.AbstractField[int]):
+    def __init__(self, *values: int) -> None:
+        self.values = cycle(values)
+
+    def __call__(self) -> int:
+        return next(self.values)
 
 
 def test_init_implementation_needed() -> None:
@@ -175,6 +184,25 @@ def test_set_field() -> None:
         assert 1 <= item <= 100
 
 
+def test_set_field_retries_duplicate_values() -> None:
+    set_field = fields.SetField(CyclingIntegerField(1, 1, 2), length=2)
+
+    assert set_field() == {1, 2}
+
+
+def test_set_field_warns_when_requested_length_cannot_be_reached() -> None:
+    set_field = fields.SetField(fields.ConstantField(1), length=2)
+
+    with pytest.warns(
+        RuntimeWarning,
+        match=(
+            r"SetField generated only 1 unique items after 10 attempts; "
+            r"2 were requested"
+        ),
+    ):
+        assert set_field() == {1}
+
+
 def test_dict_field() -> None:
     dict_field = fields.DictField(
         key_field=fields.CharField(),
@@ -186,6 +214,33 @@ def test_dict_field() -> None:
         assert isinstance(key, str)
         assert len(key) == 1
         assert 1 <= value <= 100
+
+
+def test_dict_field_retries_duplicate_keys() -> None:
+    dict_field = fields.DictField(
+        key_field=CyclingIntegerField(1, 1, 2),
+        value_field=fields.ConstantField("value"),
+        length=2,
+    )
+
+    assert dict_field() == {1: "value", 2: "value"}
+
+
+def test_dict_field_warns_when_requested_length_cannot_be_reached() -> None:
+    dict_field = fields.DictField(
+        key_field=fields.ConstantField(1),
+        value_field=fields.ConstantField("value"),
+        length=2,
+    )
+
+    with pytest.warns(
+        RuntimeWarning,
+        match=(
+            r"DictField generated only 1 unique keys after 10 attempts; "
+            r"2 were requested"
+        ),
+    ):
+        assert dict_field() == {1: "value"}
 
 
 def test_factory_field() -> None:

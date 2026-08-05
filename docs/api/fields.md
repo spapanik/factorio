@@ -562,7 +562,9 @@ Generates sets containing unique values from a nested field.
 - `length: int = 5` - Target set size
 - `variation: int = 0` - Size variation (actual size = length ± variation)
 
-**Note:** Since sets contain unique values, the actual size may be less than expected if the field generates duplicate values.
+**Note:** Since sets contain unique values, generation is retried when the field
+produces duplicates. If the requested size cannot be reached after a bounded number
+of attempts, the partial set is returned and a `RuntimeWarning` is emitted.
 
 **Example:**
 
@@ -579,7 +581,7 @@ class UserFactory(Factory[User]):
 
 user = UserFactory.build()
 assert isinstance(user.unique_tags, set)
-assert len(user.unique_tags) <= 5  # May be less due to uniqueness
+assert len(user.unique_tags) == 5
 ```
 
 **Use when:** You need collections of unique values.
@@ -596,6 +598,10 @@ Generates dictionaries with keys and values from separate field generators.
 - `value_field: AbstractField[T]` - Field type for dictionary values
 - `length: int = 5` - Target dictionary size
 - `variation: int = 0` - Size variation (actual size = length ± variation)
+
+**Note:** Dictionary generation is retried when duplicate keys are produced. If the
+requested size cannot be reached after a bounded number of attempts, the partial
+dictionary is returned and a `RuntimeWarning` is emitted.
 
 **Example:**
 
