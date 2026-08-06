@@ -115,8 +115,19 @@ def test_datetime_field() -> None:
     datetime_field = fields.DateTimeField(
         min_datetime=start_datetime, max_datetime=end_datetime
     )
-    assert start_datetime <= datetime_field() <= end_datetime
-    assert datetime_field().tzinfo == london_tz
+    generated_datetime = datetime_field()
+    assert start_datetime <= generated_datetime <= end_datetime
+    assert generated_datetime.tzinfo == london_tz
+
+
+def test_datetime_field_preserves_non_utc_instant() -> None:
+    london_tz = ZoneInfo("Europe/London")
+    summer_datetime = datetime(2024, 7, 1, 12, tzinfo=london_tz)
+    datetime_field = fields.DateTimeField(
+        min_datetime=summer_datetime, max_datetime=summer_datetime
+    )
+
+    assert datetime_field() == summer_datetime
 
 
 def test_naive_datetime_field() -> None:

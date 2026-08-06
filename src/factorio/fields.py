@@ -148,10 +148,9 @@ class DateTimeField(AbstractField[datetime]):
         self.max_datetime = max_datetime.astimezone(UTC)
 
     def __call__(self) -> datetime:
-        naive_datetime = _fake.date_time_between_dates(
-            self.min_datetime, self.max_datetime
+        return _fake.date_time_between_dates(
+            self.min_datetime, self.max_datetime, tzinfo=self.timezone
         )
-        return naive_datetime.replace(tzinfo=self.timezone)
 
 
 class NaiveDateTimeField(AbstractField[datetime]):
