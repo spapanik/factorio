@@ -429,22 +429,6 @@ assert isinstance(user.address.country, Country)
 assert isinstance(user.address.country.code, str)
 ```
 
-### Overriding Nested Fields
-
-Use double underscore notation to override nested factory fields:
-
-```python
-# Override nested address fields
-user = UserFactory.build(
-    address__city="Custom City", address__country__name="Custom Country"
-)
-
-assert user.address.city == "Custom City"
-assert user.address.country.name == "Custom Country"
-```
-
-**Note:** This requires your model to support `**kwargs` initialization or you need to handle nested overrides manually.
-
 ---
 
 ## Factory Inheritance

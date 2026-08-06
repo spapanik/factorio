@@ -734,13 +734,6 @@ assert isinstance(user.address.city, str)
 
 **Use when:** Your model contains nested objects that also need to be generated.
 
-**Advanced usage:**
-You can override nested factory fields using dot notation:
-
-```python
-user = UserFactory.build(address__city="Custom City")
-```
-
 ---
 
 ## Tips and Best Practices
