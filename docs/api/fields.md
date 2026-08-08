@@ -469,8 +469,8 @@ class UserFactory(Factory[User]):
     # American or European timezones
     western_timezone = fields.TimezoneField(areas=("America", "Europe"))
 
-    # Only UTC
-    utc_only = fields.TimezoneField(areas=("Etc",))
+    # Special Etc zones, including UTC
+    special_timezone = fields.TimezoneField(areas=("Etc",))
 
 
 user = UserFactory.build()

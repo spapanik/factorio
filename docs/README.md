@@ -64,7 +64,8 @@ user = UserFactory.build()
 - **[Usage Guide](usage.md)** - Basic to advanced usage patterns
 - **[Field Reference](api/fields.md)** - Complete API reference for all field types
 - **[Factory API](api/factory.md)** - Factory class documentation
-- **[Integration Guides](integrations/)** - SQLAlchemy, Pydantic, and dataclasses
+- **Integration Guides** - [SQLAlchemy](integrations/sqlalchemy.md),
+  [Pydantic](integrations/pydantic.md), and [dataclasses](integrations/dataclasses.md)
 - **[Cookbook](cookbook.md)** - Common patterns and recipes
 - **[Advanced Guide](guides/advanced.md)** - Advanced techniques and optimizations
 - **[Changelog](CHANGELOG.md)** - Version history and changes

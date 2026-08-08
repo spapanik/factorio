@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 ## [Unreleased]
 
+### Added
+
+- Added comprehensive API, usage, integration, advanced, and cookbook documentation
+- Added support for Python 3.14
+
+### Changed
+
+- Factory fields are now inherited across the full method resolution order, with
+  subclass fields taking precedence
+- Set and dictionary fields now retry generation when duplicate values or keys
+  prevent the requested collection length from being reached
+- Updated development tooling and dependencies
+
+### Fixed
+
+- Preserved the represented instant when generating datetimes from non-UTC bounds
+- Preserved fields inherited from parent factory classes
+- Avoided shadowing the `timedelta` type in `TimedeltaField`
+
+### Removed
+
+- Removed the deprecated `TextType` and `UnstableTextType` enums
+- Removed factorio's legacy `StrEnum` implementation and internal exceptions
+- Dropped support for Python 3.10
+
 ## [0.7.0] - 2026-01-22
 
 ### Fixed
@@ -78,7 +103,8 @@ The format is based on [Keep a Changelog], and this project adheres to [Semantic
 
 [Keep a Changelog]: https://keepachangelog.com/en/1.1.0/
 [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
-[Unreleased]: https://github.com/spapanik/factorio/compare/v0.6.1...main
+[Unreleased]: https://github.com/spapanik/factorio/compare/v0.7.0...main
+[0.7.0]: https://github.com/spapanik/factorio/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/spapanik/factorio/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/spapanik/factorio/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/spapanik/factorio/compare/v0.4.1...v0.5.0

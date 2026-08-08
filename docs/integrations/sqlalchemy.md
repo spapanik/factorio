@@ -305,7 +305,7 @@ class Product(Base):
 
 # Factory
 class ProductFactory(Factory[Product]):
-    name = fields.TextField("word").capitalize()
+    name = fields.TextField("word")
     price = fields.IntegerField(min_value=100, max_value=99999)
     category = fields.ChoiceField(["electronics", "books", "clothing"])
 

@@ -10,7 +10,6 @@ nav:
   - API Reference:
       - Factory: api/factory.md
       - Fields: api/fields.md
-      - Enums: api/enums.md
   - Guides:
       - Integration Guides:
           - SQLAlchemy: integrations/sqlalchemy.md

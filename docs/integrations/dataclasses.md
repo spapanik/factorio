@@ -118,7 +118,7 @@ class Product:
 
 
 class ProductFactory(Factory[Product]):
-    name = fields.TextField("word").capitalize()
+    name = fields.TextField("word")
     price = fields.FloatField(min_value=0.01, max_value=999.99)
     # Don't define in_stock, quantity, or tags - use defaults
 
@@ -228,7 +228,7 @@ class ElectricCar(Car):
 
 class VehicleFactory(Factory[Vehicle]):
     make = fields.ChoiceField(["Toyota", "Honda", "Ford"])
-    model = fields.TextField("word").capitalize()
+    model = fields.TextField("word")
     year = fields.IntegerField(min_value=2000, max_value=2024)
 
 

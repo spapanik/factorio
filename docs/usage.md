@@ -269,8 +269,8 @@ class UserFactory(Factory[User]):
     # Asia-Pacific region
     apac_timezone = fields.TimezoneField(areas=("Asia", "Australia", "Pacific"))
 
-    # UTC only (via "Etc" area)
-    utc_timezone = fields.TimezoneField(areas=("Etc",))
+    # Special Etc zones, including UTC
+    special_timezone = fields.TimezoneField(areas=("Etc",))
 
 
 user = UserFactory.build()

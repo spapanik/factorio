@@ -94,7 +94,8 @@ assert 50 <= user.age <= 60
 **How it works:**
 
 1. Calls `get_model()` to determine the model type
-2. Iterates through class attributes to find `AbstractField` instances
+2. Iterates through the factory's MRO, from base classes to subclasses, to find
+   `AbstractField` instances
 3. Calls each field to generate a value
 4. Applies any kwargs overrides (values or field instances)
 5. Instantiates the model with all field values
@@ -103,6 +104,7 @@ assert 50 <= user.age <= 60
 **Important:**
 
 - Fields are evaluated when `.build()` is called, not when the factory is defined
+- Inherited fields are included, and a subclass field with the same name takes precedence
 - Override values take precedence over factory-defined fields
 - If you pass a field instance as an override, it will be evaluated
 
@@ -126,7 +128,7 @@ class Product:
 
 
 class ProductFactory(Factory[Product]):
-    name = fields.TextField("word").capitalize()
+    name = fields.TextField("word")
     price = fields.FloatField(min_value=0.01, max_value=999.99)
     in_stock = fields.BooleanField(truth_probability=80)
 
@@ -231,17 +233,17 @@ class CompleteUserFactory(Factory[User]):
 Create mixins for common functionality:
 
 ```python
-class TimestampedFactory(Factory[T]):
+class TimestampedMixin:
     created_at = fields.DateTimeField()
     updated_at = fields.DateTimeField()
 
 
-class AuditableFactory(Factory[T]):
+class AuditableMixin:
     created_by = fields.TextField("user_name")
     updated_by = fields.TextField("user_name")
 
 
-class ArticleFactory(TimestampedFactory, AuditableFactory):
+class ArticleFactory(TimestampedMixin, AuditableMixin, Factory[Article]):
     title = fields.TextField("sentence")
     content = fields.TextField("paragraphs", nb=3)
 
@@ -282,12 +284,12 @@ class UserFactory1(Factory[User]):
     pass
 
 
-class UserFactory2(Factory[User]):
+class ProductFactory(Factory[Product]):
     pass
 
 
 # Ambiguous inheritance
-class ConfusedFactory(UserFactory1, UserFactory2):
+class ConfusedFactory(UserFactory1, ProductFactory):
     pass
 
 
